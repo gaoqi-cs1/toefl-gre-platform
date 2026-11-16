@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!-- maven项目版本标识，固定4.0.0 -->
+    <modelVersion>4.0.0</modelVersion>
+    <!-- 继承SpringBoot父工程，统一管理依赖版本，避免版本冲突 -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.15</version>
+        <relativePath/>
+    </parent>
+    <!-- 项目坐标 -->
+    <groupId>com.demo</groupId>
+    <artifactId>toefl-backend</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>toefl-backend</name>
+    <description>托福刷题平台后端</description>
+
+    <properties>
+        <!-- 指定编译JDK版本为11，SpringBoot2.7推荐JDK8/11 -->
+        <java.version>11</java.version>
+        <!-- 单独定义MyBatis-Plus版本，方便统一修改 -->
+        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+    </properties>
+
+    <dependencies>
+        <!-- SpringBoot Web依赖：提供tomcat、web请求接收、响应等能力 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!-- MySQL驱动，连接mysql数据库 -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- MyBatis-Plus：MyBatis增强工具，封装CRUD，不用手写基础SQL -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${mybatis-plus.version}</version>
+        </dependency>
+        <!-- JJWT 0.9.1：生成、解析JWT登录令牌，和之前调试版本保持一致 -->
+       <!-- jjwt 0.11.5 新版 -->
+<dependency>
+    <groupId>io.jsonwebtoken</groupId>
+    <artifactId>jjwt-api</artifactId>
+    <version>0.11.5</version>
+</dependency>
+<dependency>
+    <groupId>io.jsonwebtoken</groupId>
+    <artifactId>jjwt-impl</artifactId>
+    <version>0.11.5</version>
+    <scope>runtime</scope>
+</dependency>
+<dependency>
+    <groupId>io.jsonwebtoken</groupId>
+    <artifactId>jjwt-jackson</artifactId>
+    <version>0.11.5</version>
+    <scope>runtime</scope>
+</dependency>
+
+        <!-- Lombok：简化实体类，自动生成get、set、toString，减少样板代码 -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!-- 单元测试依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- 解决 jjwt0.9.1 在JDK11+ DatatypeConverter缺失 -->
+<dependency>
+    <groupId>javax.xml.bind</groupId>
+    <artifactId>jaxb-api</artifactId>
+    <version>2.3.1</version>
+</dependency>
+<dependency>
+    <groupId>com.sun.xml.bind</groupId>
+    <artifactId>jaxb-impl</artifactId>
+    <version>2.3.1</version>
+</dependency>
+<dependency>
+    <groupId>com.sun.xml.bind</groupId>
+    <artifactId>jaxb-core</artifactId>
+    <version>2.3.0.1</version>
+</dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- SpringBoot打包插件，打包成可直接运行的jar包 -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- 打包时排除lombok，lombok仅编译期生效 -->
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
