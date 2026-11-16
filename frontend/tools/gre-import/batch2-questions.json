@@ -1,0 +1,385 @@
+{
+  "_comment": "GRE 扩充题库（第 2 批）。所有题目为按 GRE 官方题型自写，非抄录；答案与解析均已人工核对。字段含义见 README。",
+  "sections": [
+    {
+      "module_type": "verbal",
+      "sort_index": 5,
+      "title": "Text Completion · 单空专项 02",
+      "subtitle": "4 题 · 单空逻辑",
+      "hint": "先圈出转折词与因果词，判断空格要填「同向」还是「反向」的词",
+      "difficulty": "中级",
+      "limit_second": 480,
+      "questions": [
+        {
+          "task_type": "text_completion",
+          "stem": "Although the committee's final report was praised for its clarity, its recommendations remained ______: each proposal was phrased in terms so broad that no agency could be held to any specific commitment.",
+          "options": {
+            "A": "unequivocal",
+            "B": "equivocal",
+            "C": "redundant",
+            "D": "provisional",
+            "E": "perfunctory"
+          },
+          "answer": "B",
+          "analysis": "线索在冒号后的解释：措辞宽泛到「没有任何机构需要承担具体义务」，说明建议是含糊其辞的。Although 构成让步，前半句夸清晰，后半句必然转向反面。equivocal 意为「模棱两可、可作多种解释」，正好对应「broad / no specific commitment」。unequivocal（明确无歧义）是相反面，属典型反向陷阱；perfunctory 指「敷衍了事」，强调态度草率而非语义模糊，不对应冒号后的具体描述。"
+        },
+        {
+          "task_type": "text_completion",
+          "stem": "The historian's account is ______ rather than definitive: she presents competing interpretations side by side and refuses to adjudicate between them.",
+          "options": {
+            "A": "exhaustive",
+            "B": "provisional",
+            "C": "partisan",
+            "D": "didactic",
+            "E": "terse"
+          },
+          "answer": "B",
+          "analysis": "rather than definitive 直接给出对比结构：空格必须是 definitive（定论性的）的反义。冒号后说明作者「并置多种解释、拒绝裁决」，即只提出问题而不下结论，因此是 provisional（暂定的、待定的）。exhaustive（穷尽式）与 definitive 方向一致，属同向陷阱；partisan 指党派偏见，与「并置多方观点」矛盾；didactic 指好为人师，与拒绝裁决无关。"
+        },
+        {
+          "task_type": "text_completion",
+          "stem": "Far from ______ the criticism, the author incorporated it into the second edition, thanking her harshest readers by name.",
+          "options": {
+            "A": "inviting",
+            "B": "anticipating",
+            "C": "rebuffing",
+            "D": "soliciting",
+            "E": "paraphrasing"
+          },
+          "answer": "C",
+          "analysis": "Far from X, Y 是典型的「否定预设」结构：Y 的行为（把批评写进第二版、点名致谢）与 X 在语义上相反。接受批评的反面是拒斥批评，rebuffing（断然拒绝、冷遇）符合。inviting / soliciting 都是「主动征求」，与后半句同向，填进去会变成「非但不征求，反而采纳」，逻辑上虽通但语义重复且抹掉了反差张力；anticipating 是「预先料到」，与致谢行为无对立关系。"
+        },
+        {
+          "task_type": "text_completion",
+          "stem": "The evidence was ______: a single, unsigned memorandum that no archive could corroborate.",
+          "options": {
+            "A": "conclusive",
+            "B": "cumulative",
+            "C": "tenuous",
+            "D": "voluminous",
+            "E": "impartial"
+          },
+          "answer": "C",
+          "analysis": "冒号后是证据质量的具体描述：只有一份、无签名、无档案可佐证——三条全指向「薄弱」。tenuous 意为「单薄、站不住脚」，精准对应。conclusive（确凿）与描述完全相反，是最容易误选的强干扰项；voluminous（卷帙浩繁）与「a single memorandum」数量描述直接冲突；cumulative 指「累积而成」，单份材料谈不上累积。"
+        }
+      ]
+    },
+    {
+      "module_type": "verbal",
+      "sort_index": 6,
+      "title": "Reading Comprehension · 短篇 03",
+      "subtitle": "生态修复的「参照生态系统」之争",
+      "hint": "注意第三句 critics 的立场与第五句 defenders 的反驳，题目多考这两者的分歧点",
+      "difficulty": "中级",
+      "limit_second": 480,
+      "content_text": "Restoration ecologists have long relied on the idea of a \"reference ecosystem\" — a pre-disturbance state against which the success of a restoration project can be measured. The concept is attractive because it makes evaluation straightforward: if a restored site resembles the reference, the project has worked. Yet critics point out that many landscapes have no documented baseline, and that those which do were often shaped by human activity long before the period the reference describes. A wetland drained in the eighteenth century and reflooded in ours may be restored to a condition that never existed. Defenders of the reference approach reply that its purpose is not historical accuracy but practical guidance: an imperfect target, they argue, still constrains the range of plausible outcomes better than no target at all. The disagreement, then, is less about facts than about what restoration is for.",
+      "questions": [
+        {
+          "task_type": "reading",
+          "stem": "The passage is primarily concerned with",
+          "options": {
+            "A": "arguing that restoration projects should abandon the notion of a reference ecosystem",
+            "B": "explaining why a widely used standard in restoration is contested and what the dispute is really about",
+            "C": "describing the technical difficulties of documenting pre-disturbance landscapes",
+            "D": "comparing two methods of evaluating the success of a wetland restoration",
+            "E": "showing that human activity has altered nearly every landscape"
+          },
+          "answer": "B",
+          "analysis": "全文结构是「提出标准 → 批评者质疑 → 支持者辩护 → 作者点出争点本质」。B 概括了这个完整链条。A 错在方向：作者没有主张放弃，只说争端不在事实而在目的；C 只是 critics 论据中的一支（无基线），属细节；D 的「两种评估方法」文中不存在；E 是过度概括，文中只说「很多」景观被人类活动塑造。"
+        },
+        {
+          "task_type": "reading",
+          "stem": "The \"defenders\" would most likely agree with which of the following statements?",
+          "options": {
+            "A": "A reference ecosystem that cannot be documented should not be used at all.",
+            "B": "An imperfect benchmark is more useful than the absence of a benchmark.",
+            "C": "Restoration should aim to reproduce the landscape as it existed before any human settlement.",
+            "D": "Historical accuracy is the only defensible criterion for judging a restoration.",
+            "E": "Evaluation of restoration projects should be left to local communities."
+          },
+          "answer": "B",
+          "analysis": "定位第五句：defenders 说其目的「不是历史准确性，而是实践指导」，并明确「an imperfect target ... still constrains ... better than no target at all」，B 是这句话的改写。A 与他们的立场相反（他们正是要为「无法考据」的情况保留标准）；D 被他们自己否定（不是 historical accuracy）；C 是 critics 批评的靶子，不是 defenders 的主张；E 属于无中生有。"
+        },
+        {
+          "task_type": "reading",
+          "stem": "It can be inferred that the author regards the critics and the defenders as",
+          "options": {
+            "A": "in agreement about the facts but at odds about the purpose of restoration",
+            "B": "equally mistaken about the availability of historical baselines",
+            "C": "divided mainly over which scientific methods are most reliable",
+            "D": "unable to be reconciled because they rely on incompatible data",
+            "E": "concerned with different ecosystems that have little in common"
+          },
+          "answer": "A",
+          "analysis": "末句是作者自己的定调：\"The disagreement, then, is less about facts than about what restoration is for.\" —— 争点不在事实而在目的，A 正是其同义改写。B 说双方同样错在基线可得性，作者并未做此评判；C 把分歧归到方法可靠性，与末句「不是事实层面」相悖；D 的「不可调和」作者没有断言；E 文中双方讨论的是同一类对象，不分属不同生态系统。"
+        }
+      ]
+    },
+    {
+      "module_type": "verbal",
+      "sort_index": 7,
+      "title": "Reading Comprehension · 短篇 04",
+      "subtitle": "早期摄影「自然的铅笔」修辞再解读",
+      "hint": "作者的核心动作是「重新解读一句老话」，注意他如何把「欺骗」改写成「关于传播的论证」",
+      "difficulty": "中级",
+      "limit_second": 480,
+      "content_text": "Early commentators on photography often described the new medium as \"the pencil of nature,\" implying an image formed without human intervention. Historians of the medium have since treated that phrase as naive. Yet the phrase was rarely meant literally. Photographers who used it were making a claim about distribution rather than about authorship: an image, unlike a painting, could be reproduced indefinitely without loss, and could therefore circulate to viewers who would never enter a gallery. What worried painters was not that photographs were made without skill but that they were made in quantities that no workshop could match. Read this way, the rhetoric of mechanical honesty looks less like self-deception than like an argument about access.",
+      "questions": [
+        {
+          "task_type": "reading",
+          "stem": "Which of the following best states the main point of the passage?",
+          "options": {
+            "A": "Early photographers were more technologically sophisticated than historians have assumed.",
+            "B": "A familiar phrase in early photography criticism should be read as a claim about circulation rather than about authorship.",
+            "C": "Painters objected to photography chiefly because photographs required no craftsmanship.",
+            "D": "The concept of authorship became obsolete once images could be mechanically reproduced.",
+            "E": "Historians of photography have generally underestimated the influence of painting."
+          },
+          "answer": "B",
+          "analysis": "作者开篇引出旧说，随即用 Yet 转出新读法，末尾以 \"Read this way...\" 收束，全文就是为一个短语重新定性：不是关于作者性，而是关于流通与可及性。B 完整覆盖。A 是文中「画家担心的不是技巧」的变形，但那是论据不是主旨；C 恰好被原文否定（not that photographs were made without skill）；D 把文中局部论点推到「过时」的极端，属超出范围；E 全文未比较绘画的影响力大小。"
+        },
+        {
+          "task_type": "reading",
+          "stem": "The passage suggests that historians who treat the phrase as naive have",
+          "options": {
+            "A": "understood the phrase as a literal claim about the absence of human authorship",
+            "B": "correctly identified the commercial motives behind early photography",
+            "C": "overestimated the role of galleries in the spread of photographs",
+            "D": "mistaken the phrase for a technical description of the camera",
+            "E": "ignored the fact that early photographers were also painters"
+          },
+          "answer": "A",
+          "analysis": "原文说 historians 视该说法为 naive，紧接着作者说 \"Yet the phrase was rarely meant literally\" —— 说明历史学者的错误正是「按字面理解」，即把它当成「没有人的作者性」的字面声明。A 与之吻合。B 文中未提任何商业动机；C 画廊只是用来对比传播范围的一个点，历史学者并未在此出错；D 相机技术描述与「字面理解」不是同一层面，属于替换概念；E 无中生有。"
+        },
+        {
+          "task_type": "reading",
+          "stem": "The author would most likely agree that the anxieties of painters centered on",
+          "options": {
+            "A": "the diminishing technical skill required to make images",
+            "B": "the sheer number of images that could be produced and circulated",
+            "C": "the refusal of photographers to identify themselves as artists",
+            "D": "the loss of state patronage for traditional painting",
+            "E": "the unreliability of photographic paper and chemicals"
+          },
+          "answer": "B",
+          "analysis": "关键句：\"What worried painters was not that photographs were made without skill but that they were made in quantities that no workshop could match.\" not A but B 是明确的排除—肯定结构，B 为「数量与流通规模」的同义改写。A 被原文直接否定；C、D、E 三项文中均无任何依据。"
+        }
+      ]
+    },
+    {
+      "module_type": "quant",
+      "sort_index": 3,
+      "title": "Quantitative Comparison · 数量比较 02",
+      "subtitle": "6 题 · 代数与百分比",
+      "hint": "先化简再比较；不能确定大小关系时才选 D",
+      "difficulty": "基础",
+      "limit_second": 600,
+      "questions": [
+        {
+          "task_type": "quant_compare",
+          "stem": "x > 0\nQuantity A: (x + 1) / x\nQuantity B: x / (x + 1)",
+          "prompt": "",
+          "options": {
+            "A": "Quantity A is greater.",
+            "B": "Quantity B is greater.",
+            "C": "The two quantities are equal.",
+            "D": "The relationship cannot be determined from the information given."
+          },
+          "answer": "A",
+          "analysis": "把 A 拆成 1 + 1/x：因为 x > 0，所以 1/x > 0，A > 1。而 B = x/(x+1)，分子小于分母且两者均为正，故 0 < B < 1。于是 A > 1 > B 恒成立，选 A。不需要分情况讨论——这是化简后一步得解的类型。"
+        },
+        {
+          "task_type": "quant_compare",
+          "stem": "The radius of a circle is increased by 20%.\nQuantity A: The percent increase in the area of the circle\nQuantity B: 40%",
+          "prompt": "",
+          "options": {
+            "A": "Quantity A is greater.",
+            "B": "Quantity B is greater.",
+            "C": "The two quantities are equal.",
+            "D": "The relationship cannot be determined from the information given."
+          },
+          "answer": "A",
+          "analysis": "面积为 πr²，面积与半径的平方成正比。半径变为 1.2r，面积变为 1.44πr²，即增长 44%。44% > 40%，选 A。易错点：把半径的 20% 直接当成面积的 20% 或 20%×2 = 40%（线性外推），正确做法是平方：(1.2)² = 1.44。"
+        },
+        {
+          "task_type": "quant_compare",
+          "stem": "Quantity A: 1/3 + 1/4\nQuantity B: 1/2 + 1/6",
+          "prompt": "",
+          "options": {
+            "A": "Quantity A is greater.",
+            "B": "Quantity B is greater.",
+            "C": "The two quantities are equal.",
+            "D": "The relationship cannot be determined from the information given."
+          },
+          "answer": "B",
+          "analysis": "通分计算：A = 4/12 + 3/12 = 7/12 ≈ 0.583；B = 3/6 + 1/6 = 4/6 = 2/3 ≈ 0.667。故 B 更大，选 B。也可用「离 1 的补数」估算：A 差 5/12 ≈ 0.417，B 差 1/3 ≈ 0.333，补数越小原数越大。易错点是把 1/3 + 1/4 直接相加成 2/7（分子分母分别相加），会得到 0.286 并错选 B 但不自知。"
+        },
+        {
+          "task_type": "quant_compare",
+          "stem": "Quantity A: 15% of 80\nQuantity B: 80% of 15",
+          "prompt": "",
+          "options": {
+            "A": "Quantity A is greater.",
+            "B": "Quantity B is greater.",
+            "C": "The two quantities are equal.",
+            "D": "The relationship cannot be determined from the information given."
+          },
+          "answer": "C",
+          "analysis": "两者都是 0.15 × 80 = 80 × 0.15 = 12，乘法交换律保证相等，选 C。这题考的是识别 a% of b = b% of a 这一恒等式，避免真的去算两遍。"
+        },
+        {
+          "task_type": "quant_compare",
+          "stem": "Quantity A: The sum of the first 10 positive even integers\nQuantity B: 100",
+          "prompt": "",
+          "options": {
+            "A": "Quantity A is greater.",
+            "B": "Quantity B is greater.",
+            "C": "The two quantities are equal.",
+            "D": "The relationship cannot be determined from the information given."
+          },
+          "answer": "A",
+          "analysis": "前 10 个正偶数为 2, 4, …, 20，和 = 2 × (1 + 2 + … + 10) = 2 × 55 = 110。110 > 100，选 A。若误把它当作前 10 个整数之和（55）再比，就会错选 B。"
+        },
+        {
+          "task_type": "quant_compare",
+          "stem": "x is a real number.\nQuantity A: x²\nQuantity B: x",
+          "prompt": "",
+          "options": {
+            "A": "Quantity A is greater.",
+            "B": "Quantity B is greater.",
+            "C": "The two quantities are equal.",
+            "D": "The relationship cannot be determined from the information given."
+          },
+          "answer": "D",
+          "analysis": "取三种情况即可判定无法确定：x = 2 时 x² = 4 > 2（A 大）；x = 0.5 时 x² = 0.25 < 0.5（B 大）；x = 1 时两者都等于 1（相等）。既然两种以上情形给出不同结论，就选 D。注意常见错误是默认「平方必然更大」——这只在 x > 1 或 x < 0 时成立，在 0 < x < 1 区间恰好相反。"
+        }
+      ]
+    },
+    {
+      "module_type": "quant",
+      "sort_index": 4,
+      "title": "Problem Solving · 问题求解 02",
+      "subtitle": "5 题 · 方程、比例与几何",
+      "hint": "列式优先，注意「再降价」是在已折价基础上打折",
+      "difficulty": "基础",
+      "limit_second": 600,
+      "questions": [
+        {
+          "task_type": "quant_problem",
+          "stem": "If 3x + 5 = 2x + 12, what is the value of x²?",
+          "options": {
+            "A": "36",
+            "B": "49",
+            "C": "56",
+            "D": "64",
+            "E": "81"
+          },
+          "answer": "B",
+          "analysis": "移项：3x - 2x = 12 - 5，得 x = 7，x² = 49。选项里 36 对应 x=6（若把 5 移到右边写成 12+5 就会得到 3x-2x=17，进而 x=17 跑出选项之外），56 对应 7×8，是典型的「算完 x 又乘错」干扰项。"
+        },
+        {
+          "task_type": "quant_problem",
+          "stem": "A jacket priced at $200 is marked down by 20%, and the reduced price is then marked down by an additional 25%. What is the final price?",
+          "options": {
+            "A": "$110",
+            "B": "$120",
+            "C": "$125",
+            "D": "$140",
+            "E": "$150"
+          },
+          "answer": "B",
+          "analysis": "第一次：200 × 0.8 = 160。第二次在 160 上再打 75 折：160 × 0.75 = 120。选 B。经典错误是把两次折扣相加得 45%，算成 200 × 0.55 = 110（选项 A 就是为此设置的）。连续百分比折扣必须逐次作用在当前价格上。"
+        },
+        {
+          "task_type": "quant_problem",
+          "stem": "Working alone, A can finish a job in 6 hours and B can finish the same job in 12 hours. Working together at their respective constant rates, how many hours will they take?",
+          "options": {
+            "A": "3",
+            "B": "4",
+            "C": "4.5",
+            "D": "5",
+            "E": "6"
+          },
+          "answer": "B",
+          "analysis": "设工作量为 1，A 的速率为 1/6，B 为 1/12，合速率为 1/6 + 1/12 = 3/12 = 1/4，故需 4 小时，选 B。注意不能把时间取平均（(6+12)/2 = 9 或 6×12/(6+12)=4 混用公式），合速率的本质是速率相加。"
+        },
+        {
+          "task_type": "quant_problem",
+          "stem": "In a class of 40 students, the ratio of boys to girls is 3 : 5. How many boys are in the class?",
+          "options": {
+            "A": "12",
+            "B": "15",
+            "C": "18",
+            "D": "20",
+            "E": "24"
+          },
+          "answer": "B",
+          "analysis": "按比例把总人数分成 3 + 5 = 8 份，每份 40/8 = 5 人，男生 3 份 = 15 人，选 B。若误把 3:5 当成「男生占 3/5」，会算成 24（选项 E）。"
+        },
+        {
+          "task_type": "quant_problem",
+          "stem": "A right triangle has legs of length 5 and 12. What is its area?",
+          "options": {
+            "A": "30",
+            "B": "34",
+            "C": "60",
+            "D": "65",
+            "E": "78"
+          },
+          "answer": "A",
+          "analysis": "直角三角形两直角边即底与高，面积 = (5 × 12)/2 = 30，选 A。斜边 13 只是 5-12-13 勾股数组的常识点，与面积无关；选项 C 的 60 是忘了除以 2 的结果，E 的 78 是 5×12+13+5 之类的错误拼接。"
+        }
+      ]
+    },
+    {
+      "module_type": "writing",
+      "sort_index": 3,
+      "title": "Analytical Writing · Issue 题库 02",
+      "subtitle": "2 题 · 政府资助艺术 / 领导者品质",
+      "hint": "Issue 要给出明确立场，用两个具体例子支撑，再让一步反方，最后收束",
+      "difficulty": "中级",
+      "limit_second": 1800,
+      "questions": [
+        {
+          "task_type": "awa_issue",
+          "prompt": "Governments should continue to fund the arts even in times of fiscal constraint.\n\nWrite a response in which you discuss the extent to which you agree or disagree with the recommendation and explain your reasoning for the position you take. In developing and supporting your position, describe specific circumstances in which adopting the recommendation would or would not be advantageous and explain how these examples shape your position.",
+          "score_standard": "GRE AWA Issue 六分制要点：①明确立场（不是「两面都有道理」的骑墙）②论证有具体例证支撑，而非泛泛断言 ③主动处理反方最强论点并给出回应 ④段落推进清晰、句间有逻辑连接 ⑤用词准确、句式有变化，语法错误少。常见扣分点：只罗列理由不展开、例子空洞（如「艺术很重要」）、结论与开头立场不一致。",
+          "sample_answer": "When budgets tighten, publicly funded art is usually the first line item to be cut, on the assumption that it is a luxury that can wait for better times. I largely disagree. Public arts funding is not consumption; it is infrastructure, and the case for protecting it rests on two arguments that fiscal pressure actually strengthens rather than weakens.\n\nThe first is that arts institutions carry costs that no market can recover. A regional museum, a civic orchestra, or a public sculpture programme generates value that residents enjoy whether or not they buy a ticket, and that value cannot be captured by charging admission. When a city cuts such funding in a downturn, the loss is not deferred; the institution disbands, its staff disperses, and rebuilding takes a decade. Fiscal constraint therefore argues for protecting the fixed core of arts funding, not for treating it as discretionary.\n\nThe second is that the arts are cheap relative to what they replace. In most municipalities arts budgets are a rounding error beside road maintenance or debt service, yet they anchor tourism, evening foot traffic, and the after-school hours that would otherwise be spent elsewhere. A city that closes its community arts centre to save a modest sum often spends more on the consequences.\n\nA reasonable objection is that in a genuine emergency — a pandemic, a war — every non-essential service must yield. I accept that, but the objection concerns timing, not principle: emergency suspension is compatible with a statutory commitment that resumes automatically. What I reject is the habitual use of hard times as a pretext for permanent withdrawal.\n\nThe recommendation, then, is sound. Funding the arts under constraint is not sentimentality; it is a decision to preserve assets whose value is public by nature and whose loss is irreversible.",
+          "analysis": "结构：立场（largely disagree）→ 理由一（公共品属性，市场无法回收成本）→ 理由二（性价比与替代成本）→ 让步（真正紧急状态可暂停，但属时间性例外）→ 收束回到立场。亮点：让步段把反方限定在「timing not principle」，既承认又收窄，避免骑墙；结尾用「not sentimentality but preservation of irreversible assets」回扣开头，形成闭环。语言上多用对比句式（not X but Y）与短句收束，符合 6 分档的表达要求。"
+        },
+        {
+          "task_type": "awa_issue",
+          "prompt": "The most important quality in a leader is the willingness to admit mistakes.\n\nWrite a response in which you discuss the extent to which you agree or disagree with the claim and explain your reasoning for the position you take.",
+          "score_standard": "同上六分制要点。此外注意：题目是「最重要」这一排他性表述，高质量答卷必须回应「是否最重要」而不是只论证「是否重要」；要预设并反驳另一种候选品质（如判断力、诚信、决断力）。",
+          "sample_answer": "Admitting mistakes is a valuable trait, but calling it the most important quality in a leader mistakes a repair mechanism for the capacity it repairs. I would rank judgment first, candour second, and treat admission of error as a practice that keeps both honest.\n\nJudgment is the quality that determines whether a decision is worth making at all. A leader who promptly admits a badly chosen strategy has still chosen badly; the admission limits damage but does not create value. Consider two hospital administrators facing the same staffing crisis: one selects a sound redeployment plan and executes it, the other selects a plan that endangers patients and then apologizes publicly. We would not say the second led better because he was more forthcoming.\n\nWhat admission of mistakes genuinely buys is information. Organizations fail quietly when subordinates learn that bad news travels badly; a leader who names her own errors lowers the cost of disagreement and thereby improves the judgments the organization can make. That is a second-order benefit, real but derivative, which is exactly why it should not be ranked first.\n\nNor is admission costless. Announced too readily, it becomes a substitute for preparation, and repeated public self-correction erodes the credibility a leader needs to hold a course through unpopular but correct decisions. The virtue is conditional, not absolute.\n\nA defender might reply that without candour, judgment cannot be corrected at all. True, and that is why candour matters. But the claim at issue is that it matters most, and on that the answer is no: candour without judgment produces gracefully acknowledged failure, while judgment without candour at least produces results and leaves the correcting to others.\n\nThe most important quality, then, is the judgment to choose well; the willingness to admit error is its indispensable companion.",
+          "analysis": "关键动作：把「最重要」这个排他表述当成论证对象，先排序（judgment > candour），再逐一证明 candour 是二阶收益（信息价值）、且有代价（滥用则沦为失职的替身）。医院双例的对照用得很稳：同样的坦诚，不同水平的判断，结论直接分开二者。让步段处理「没有坦诚就无法纠正判断」这一最强反驳，用「True, and that is why…」先承认再限定回题目本身，避免被反方带走。"
+        }
+      ]
+    },
+    {
+      "module_type": "writing",
+      "sort_index": 4,
+      "title": "Analytical Writing · Argument 题库 02",
+      "subtitle": "2 题 · 医院满意度 / 咖啡包装文案",
+      "hint": "Argument 不表态，只找论证漏洞：样本、因果、类比、必要/充分条件、替代解释",
+      "difficulty": "中级",
+      "limit_second": 1800,
+      "questions": [
+        {
+          "task_type": "awa_argument",
+          "prompt": "The following appeared in a memo from the director of a hospital.\n\n\"In the past year, patient satisfaction scores at our hospital rose sharply after we replaced volunteer greeters at the entrance with paid receptionists. To raise satisfaction further, we should therefore hire additional paid receptionists and station them throughout the building.\"\n\nWrite a response in which you examine the stated and/or unstated assumptions of the argument. Be sure to explain how the argument depends on these assumptions and what the implications are for the argument if the assumptions prove unwarranted.",
+          "score_standard": "Argument 六分制要点：①准确识别论证链（相关性→因果→可推广）②逐条指出未言明假设并说明「若不成立会怎样」③给出替代解释或所需证据 ④不掺入个人立场（不得说「我认为医院应…」）⑤结构清晰，漏洞按重要性排序。",
+          "sample_answer": "The memo moves from a single year's change to a permanent staffing policy in three steps, and each step rests on an assumption it does not defend.\n\nThe first is that the greeters were the cause of the improvement. Satisfaction scores rose in the same year the volunteers were replaced, but a correlation of that kind admits many explanations: the hospital may have shortened waiting times, opened a new wing, changed its survey instrument, or simply enjoyed a milder flu season. Unless the memo can show that scores in comparable departments without receptionists stayed flat, the replacement is one candidate among several.\n\nThe second assumption is that the mechanism was the receptionists' being paid rather than their being present. If what patients noticed was a reliably staffed entrance — a person who was always there, rather than a volunteer whose hours varied — then the lesson is about coverage and consistency, not about compensation, and hiring more paid staff adds cost without adding the thing that helped.\n\nThe third is that the effect generalizes. A greeter at the entrance greets arrivals, when patients are uncertain and receptive; a receptionist stationed on the third floor meets people who are already admitted visitors. The memo offers no reason to expect the same response in corridors or wards.\n\nBefore committing to a larger payroll, the director should test the claim: introduce receptionists in a few units, compare satisfaction there with matched units that receive no change, and ask patients what the staff actually did for them. Without that evidence the recommendation is a plausible guess purchased at recurring cost.",
+          "analysis": "三处漏洞按论证链顺序拆：①因果（同时发生≠由此引起，列出替代解释）②机制归因（「付薪水」还是「有人常在」，把变量拆开）③可推广性（入口场景与楼层场景的受众差异）。每条都补了「若不成立会怎样」与「需要什么证据」。全文无个人立场，结尾落在「先做对照试验」而不是「应该/不应该雇」。"
+        },
+        {
+          "task_type": "awa_argument",
+          "prompt": "The following appeared in a letter from the marketing manager of a coffee company.\n\n\"Sales of our house-brand coffee rose 12 percent in the quarter when we began printing the phrase 'small-batch roasted' on the packaging. Therefore, to increase sales further, we should add more claims of that kind to all of our packaging.\"\n\nWrite a response in which you discuss what specific evidence is needed to evaluate the argument and explain how the evidence would weaken or strengthen the argument.",
+          "score_standard": "同上。本题属「需要何种证据」型，答卷应组织为「证据清单 + 该证据成立/不成立时论证如何变化」，而不是简单罗列漏洞。",
+          "sample_answer": "The letter infers a durable marketing rule from one quarter's movement in one product line. To judge it, four kinds of evidence would be needed, and each would change the argument in a different direction.\n\nFirst, evidence on what else changed that quarter. If the company also ran a price promotion, secured new shelf space, or benefited from a competitor's recall, the 12 percent may belong to those causes. A comparison of matching products sold without the new wording, over the same period, would settle whether the phrase did any work: flat sales there would strengthen the letter, similar gains would leave it unsupported.\n\nSecond, evidence on why buyers responded. If customers read \"small-batch roasted\" as a quality signal about freshness, the claim has a mechanism and can plausibly be repeated; if they read it merely as novelty, or as a cue tied to this one blend, repetition on other products will wear out. Short interviews or a test of two label variants would distinguish the two.\n\nThird, evidence on the cost and the ceiling. Additional claims consume label space and invite scrutiny from regulators if they cannot be substantiated. Sales data alone cannot show whether the gain exceeded the added packaging cost, and a second test would reveal whether returns diminish once every product carries a claim.\n\nFourth, evidence on scope. This was one blend in one market. Whether the effect transfers to dark roasts, decaffeinated lines, or wholesale accounts is unknown, and a rollout based on a single product's result risks generalizing from too small a sample.\n\nThe argument, in short, is testable rather than proven; until the first and third bodies of evidence arrive, expanding the claims across all packaging is a bet on an unexplained number.",
+          "analysis": "按「四类证据」组织，每条都写明「成立时如何强化 / 不成立时如何削弱」：对照同期其他变化（因果）、购买动机（机制）、成本与边际递减（可行性）、适用范围（可推广性）。开头就把论证定性为「从单季单产品推出通用规则」，结尾用「testable rather than proven」收束，符合证据型题目的答题范式。"
+        }
+      ]
+    }
+  ]
+}
