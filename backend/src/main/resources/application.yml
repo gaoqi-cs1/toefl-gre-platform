@@ -1,0 +1,31 @@
+# 服务配置
+server:
+  port: 8080  # 后端启动端口，前端代理会转发/api到此端口
+
+spring:
+  # 数据库数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver # mysql8驱动类
+    url: jdbc:mysql://localhost:3306/toefl_db?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    # url说明：数据库地址/数据库名，编码utf8mb4，时区上海，避免时间报错
+    username: root    # mysql账号
+    password: 123456 # 改成你自己的root密码
+
+  # 文件上传配置（用于后续上传听力音频mp3）
+  servlet:
+    multipart:
+      max-file-size: 50MB       # 单个文件最大50M，听力音频够用
+      max-request-size: 100MB   # 单次请求总大小上限
+
+# MyBatis-Plus配置
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml # xml映射文件路径
+  type-aliases-package: com.demo.toefl.entity # 实体类别名包
+  configuration:
+    map-underscore-to-camel-case: true # 自动下划线转驼峰：create_time → createTime
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 打印执行SQL，方便调试
+
+# JWT配置
+jwt:
+  secret: toefl-platform-secret-key-202611 # jwt加密密钥，生产环境需要换成更复杂的
+  expire: 7200000 # 过期时间 单位毫秒 7200000=2小时
