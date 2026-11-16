@@ -1,0 +1,180 @@
+package com.demo.toefl.controller;
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.demo.toefl.dto.ExamSubmitDTO;
+import com.demo.toefl.entity.ExamRecord;
+import com.demo.toefl.entity.Question;
+import com.demo.toefl.entity.TpoSuite;
+import com.demo.toefl.entity.UserAnswer;
+import com.demo.toefl.service.ExamRecordService;
+import com.demo.toefl.service.QuestionService;
+import com.demo.toefl.service.TpoSuiteService;
+import com.demo.toefl.service.UserAnswerService;
+import com.demo.toefl.util.JwtUtil;
+import com.demo.toefl.util.Result;
+import com.demo.toefl.util.ToeflScoreUtil;
+import lombok.Data;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping("/api/fullSuiteExam")
+public class SuiteFullExamController {
+
+    @Resource
+    private ExamRecordService examRecordService;
+    @Resource
+    private TpoSuiteService tpoSuiteService;
+    @Resource
+    private QuestionService questionService;
+    @Resource
+    private UserAnswerService userAnswerService;
+    @Resource
+    private JwtUtil jwtUtil;
+
+    // 1. 初始化整套模考：新建一条doing记录
+// 初始化整套模考
+@PostMapping("/start")
+public Result<ExamRecord> startFullExam(@RequestParam Long suiteId, HttpServletRequest request) {
+    Long userId = jwtUtil.getUserIdByToken(request);
+    TpoSuite suite = tpoSuiteService.getById(suiteId);
+    if (suite == null) {
+        return Result.fail("套题不存在");
+    }
+    ExamRecord record = new ExamRecord();
+    record.setUserId(userId);
+    record.setSuiteId(suiteId);
+    record.setSuiteName(suite.getTitle());
+    record.setExamStatus("doing");
+    record.setExamType("full"); // 标记为整套
+    record.setStartTime(LocalDateTime.now());
+    record.setCreateTime(LocalDateTime.now());
+    record.setReadScore(0);
+    record.setListenScore(0);
+    record.setSpeakScore(0);
+    record.setWriteScore(0);
+    record.setTotalScore(0);
+    examRecordService.save(record);
+    return Result.success(record);
+}
+
+
+    // 2. 根据suiteId一次性加载整套所有题目（阅读/听力/口语/写作）
+    @GetMapping("/loadQuestions")
+    public Result<Map<String, List<Question>>> loadFullQuestions(@RequestParam Long suiteId) {
+        // 你这里根据suiteId关联section，再查question，这里用wrapper示例，按你自己的关联逻辑
+        LambdaQueryWrapper<Question> wrapper = new LambdaQueryWrapper<>();
+        wrapper.inSql(Question::getSectionId,
+                "select id from suite_section where suite_id = " + suiteId
+        );
+        List<Question> all = questionService.list(wrapper);
+        Map<String, List<Question>> map = all.stream()
+                .collect(Collectors.groupingBy(Question::getModuleType));
+        return Result.success(map);
+    }
+
+    // 3. 整套一次性提交判分（核心，独立提交接口，不走单科提交）
+    @PostMapping("/submit")
+    @Transactional
+    public Result<?> submitFullExam(@RequestBody ExamSubmitDTO dto, HttpServletRequest request) {
+        Long userId = jwtUtil.getUserIdByToken(request);
+        ExamRecord record = examRecordService.getById(dto.getRecordId());
+        if (record == null || !record.getUserId().equals(userId)) {
+            return Result.fail("记录不存在或者无权限");
+        }
+        if ("finished".equals(record.getExamStatus())) {
+            return Result.fail("该套题已经提交过，不能重复提交");
+        }
+
+        int readCorrect = 0;
+        for (ExamSubmitDTO.QuestionAnswerDTO ans : dto.getReadingAnswerList()) {
+            String rightAns = questionService.getRightAnswerById(ans.getQuestionId());
+            if (rightAns != null && rightAns.equals(ans.getUserAns())) {
+                readCorrect++;
+            }
+            UserAnswer ua = new UserAnswer();
+            ua.setRecordId(dto.getRecordId());
+            ua.setQuestionId(ans.getQuestionId());
+            ua.setUserAnswer(ans.getUserAns());
+            ua.setModuleType("reading");
+            userAnswerService.save(ua);
+        }
+
+        int listenCorrect = 0;
+        for (ExamSubmitDTO.QuestionAnswerDTO ans : dto.getListeningAnswerList()) {
+            String rightAns = questionService.getRightAnswerById(ans.getQuestionId());
+            if (rightAns != null && rightAns.equals(ans.getUserAns())) {
+                listenCorrect++;
+            }
+            UserAnswer ua = new UserAnswer();
+            ua.setRecordId(dto.getRecordId());
+            ua.setQuestionId(ans.getQuestionId());
+            ua.setUserAnswer(ans.getUserAns());
+            ua.setModuleType("listening");
+            userAnswerService.save(ua);
+        }
+
+        for (ExamSubmitDTO.SpeakWriteDTO ans : dto.getSpeakingAnswerList()) {
+            UserAnswer ua = new UserAnswer();
+            ua.setRecordId(dto.getRecordId());
+            ua.setQuestionId(ans.getQuestionId());
+            ua.setUserAnswer(ans.getContent());
+            ua.setModuleType("speaking");
+            userAnswerService.save(ua);
+        }
+        for (ExamSubmitDTO.SpeakWriteDTO ans : dto.getWritingAnswerList()) {
+            UserAnswer ua = new UserAnswer();
+            ua.setRecordId(dto.getRecordId());
+            ua.setQuestionId(ans.getQuestionId());
+            ua.setUserAnswer(ans.getContent());
+            ua.setModuleType("writing");
+            userAnswerService.save(ua);
+        }
+
+        int readScore = ToeflScoreUtil.calcReadScore(readCorrect);
+        int listenScore = ToeflScoreUtil.calcListenScore(listenCorrect);
+        int speakScore = 0;
+        int writeScore = 0;
+        int total = readScore + listenScore + speakScore + writeScore;
+
+        record.setExamStatus("finished");
+        record.setReadScore(readScore);
+        record.setListenScore(listenScore);
+        record.setSpeakScore(speakScore);
+        record.setWriteScore(writeScore);
+        record.setTotalScore(total);
+        record.setEndTime(LocalDateTime.now());
+        examRecordService.updateById(record);
+        return Result.success(record);
+    }
+
+    // 4. 查询整套模考记录列表（独立，和单科记录分开，如果你想分开看记录）
+   @GetMapping("/recordList")
+public Result<List<ExamRecord>> fullRecordList(HttpServletRequest request) {
+    Long userId = jwtUtil.getUserIdByToken(request);
+    LambdaQueryWrapper<ExamRecord> wrapper = new LambdaQueryWrapper<>();
+    wrapper.eq(ExamRecord::getUserId, userId)
+            .eq(ExamRecord::getExamType, "full") // 只查整套模考
+            .orderByDesc(ExamRecord::getStartTime);
+    return Result.success(examRecordService.list(wrapper));
+}
+
+
+    // 5. 查询单条成绩详情
+    @GetMapping("/record/{id}")
+    public Result<ExamRecord> getFullRecord(@PathVariable Long id, HttpServletRequest request) {
+        Long userId = jwtUtil.getUserIdByToken(request);
+        ExamRecord record = examRecordService.getById(id);
+        if (record == null || !record.getUserId().equals(userId)) {
+            return Result.fail("无权限或记录不存在");
+        }
+        return Result.success(record);
+    }
+}
