@@ -1,0 +1,45 @@
+[SET]
+title: 示例 - 城市夜间照明的影响
+sectionTitle: 阅读 Passage 1（示例）
+
+[PASSAGE]
+For most of human history, the night was genuinely dark. Only in the last century did artificial light become cheap enough to illuminate streets, homes, and workplaces after sunset. The change brought obvious benefits: safer roads, longer working hours, and livelier public spaces. Yet researchers have begun to notice a subtler cost. Many insects navigate by faint celestial cues, and a bright streetlamp can draw them into wasteful orbits until they die of exhaustion. Birds that migrate at night face a similar problem, circling illuminated towers instead of following their routes.
+
+Some cities have responded by dimming lamps during low-traffic hours or by choosing wavelengths that attract fewer insects. Such measures rarely save much money, but they do reduce ecological disruption, and several studies report that residents barely notice the difference in visibility.
+[/PASSAGE]
+
+
+[TRANSLATION]
+在人类历史的大部分时间里，夜晚是真的黑。直到最近一百年，人造光才便宜到足以在日落后照亮街道、住宅和工作场所。这一变化带来了显而易见的好处：更安全的道路、更长的工作时间，以及更热闹的公共空间。然而研究者开始注意到一种不那么明显的代价。许多昆虫依靠微弱的天体线索导航，而一盏明亮的街灯可能把它们卷进无谓的绕圈，直到力竭而死。夜间迁徙的鸟类面临类似的问题：它们绕着被照亮的塔楼盘旋，而不是沿着自己的路线飞行。
+
+有些城市的应对办法是：在车流稀少的时段调暗路灯，或者选用吸引昆虫较少的波长。这类措施很少能省下多少钱，但确实减少了生态干扰，而且若干研究报告说，居民几乎察觉不到可见度上的差别。
+[/TRANSLATION]
+
+[Q]
+type: VOCABULARY
+stem: The word "subtler" in the passage is closest in meaning to
+A) less obvious
+B) more expensive
+C) more dangerous
+D) less permanent
+answer: A
+analysis: 原文先说人工照明带来 obvious benefits，接着用 Yet 转折引出 a subtler cost，subtler 与前面的 obvious 构成对照，意思是"不那么明显的"，故选 A。
+[/Q]
+
+
+[TRANSLATION]
+在人类历史的大部分时间里，夜晚是真的黑。直到最近一百年，人造光才便宜到足以在日落后照亮街道、住宅和工作场所。这一变化带来了显而易见的好处：更安全的道路、更长的工作时间，以及更热闹的公共空间。然而研究者开始注意到一种不那么明显的代价。许多昆虫依靠微弱的天体线索导航，而一盏明亮的街灯可能把它们卷进无谓的绕圈，直到力竭而死。夜间迁徙的鸟类面临类似的问题：它们绕着被照亮的塔楼盘旋，而不是沿着自己的路线飞行。
+
+有些城市的应对办法是：在车流稀少的时段调暗路灯，或者选用吸引昆虫较少的波长。这类措施很少能省下多少钱，但确实减少了生态干扰，而且若干研究报告说，居民几乎察觉不到可见度上的差别。
+[/TRANSLATION]
+
+[Q]
+type: INFERENCE
+stem: What can be inferred about the measures some cities have taken?
+A) They cost more than keeping all lamps at full brightness.
+B) They are unlikely to be adopted because residents object.
+C) They can reduce harm to wildlife without greatly changing how dark streets feel.
+D) They have already eliminated the problem of migrating birds.
+answer: C
+analysis: 原文说 measures rarely save much money, but they do reduce ecological disruption，且 residents barely notice the difference in visibility，说明生态收益明显、观感变化很小，故选 C。A 曲解"省不了多少钱"；B 与"居民几乎察觉不到"矛盾；D 说得过于彻底。
+[/Q]

@@ -1,0 +1,68 @@
+[SET]
+title: 示例 - 图书馆预约（听力 Conversation）
+sectionTitle: 听力 Conversation 1（示例）
+audio: mres\AU-005844704c1d6c750bc40c68161b1c18.mp3
+
+[TRANSCRIPT]
+Student: Hi, I booked a study room for this afternoon, but the confirmation email never arrived.
+Librarian: Let me check. Rooms are held for fifteen minutes, so if you come a little late, please call the front desk.
+Student: Understood. Could you resend the confirmation to my university address?
+Librarian: Sure. It should reach you within a few minutes.
+[/TRANSCRIPT]
+
+
+[TRANSLATION]
+学生：你好，我订了今天下午的自习室，但确认邮件一直没收到。
+图书管理员：我查一下。房间只保留十五分钟，如果你来晚一点，请给前台打个电话。
+学生：明白了。能不能把确认邮件重发到我的学校邮箱？
+图书管理员：可以，几分钟内应该就到你那里了。
+[/TRANSLATION]
+
+[Q]
+type: PURPOSE
+stem: Why does the student speak to the librarian?
+A) To reserve a room for next week
+B) To complain about a late fee
+C) To ask about a missing confirmation email
+D) To return an overdue book
+answer: C
+analysis: 学生开头就说 booked a study room 但 confirmation email never arrived，说明来意是确认邮件没到，故选 C。A 是已订而非再订；B 未提费用；D 未提还书。
+[/Q]
+
+
+[TRANSLATION]
+学生：你好，我订了今天下午的自习室，但确认邮件一直没收到。
+图书管理员：我查一下。房间只保留十五分钟，如果你来晚一点，请给前台打个电话。
+学生：明白了。能不能把确认邮件重发到我的学校邮箱？
+图书管理员：可以，几分钟内应该就到你那里了。
+[/TRANSLATION]
+
+[Q]
+type: DETAIL
+stem: What does the librarian say about reserved rooms?
+A) They are kept for fifteen minutes only.
+B) They must be paid for in advance.
+C) They can be booked for a full day.
+D) They are only available to graduate students.
+answer: A
+analysis: 原文 Rooms are held for fifteen minutes，即预约只保留 15 分钟，故选 A。其余选项原文均未出现。
+[/Q]
+
+
+[TRANSLATION]
+学生：你好，我订了今天下午的自习室，但确认邮件一直没收到。
+图书管理员：我查一下。房间只保留十五分钟，如果你来晚一点，请给前台打个电话。
+学生：明白了。能不能把确认邮件重发到我的学校邮箱？
+图书管理员：可以，几分钟内应该就到你那里了。
+[/TRANSLATION]
+
+[Q]
+type: NEXT ACTION
+stem: What will the librarian most likely do next?
+A) Cancel the student's booking
+B) Resend the confirmation email
+C) Show the student to another room
+D) Charge the student a fee
+answer: B
+analysis: 学生请求 resend the confirmation，管理员回答 Sure，因此下一步是重发确认邮件，故选 B。
+[/Q]
