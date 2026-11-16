@@ -1,0 +1,334 @@
+# TOEFL / GRE 刷题平台 · 项目说明与知识点
+
+> 本文基于 `E:\cs\toefl-platform` 当前代码与 `toefl_db` 实际数据整理，数字均为实测：后端 130 个 Java 文件 / 6498 行，前端 29 个 Vue 文件 / 8045 行，58 个 REST 接口，32 张表。
+
+---
+
+## 一、项目简介（一句话版）
+
+一个面向托福（新托福 1–6 分档）与 GRE（130–170 量表分 + AWA 0–6）的自建刷题与全真模考平台：前端 Vue3 单页应用、后端 Spring Boot + MyBatis-Plus、MySQL 存储，支持分块练习（做完一题立刻判分并给中英解析）、真题套题（四模块一次性提交后统一判分）、随机一键组卷、错题本、成绩记录，以及托福口语录音与 AI 式（本地 rubric 引擎）评分。
+
+### 面向的问题
+- 市面 TPO 软件只能做题、不能自定义题库与组卷，错题和记录散落在各处；
+- 托福、GRE 两套考试的题型、计时、计分口径完全不同，混在一起会互相污染数据；
+- 需要一个能自己扩题、自己控计时、自己看解析的闭环工具，而不是一堆零散 PDF。
+
+### 规模数据（实测）
+| 维度 | 数值 |
+|---|---|
+| 后端 | Java 文件 130 个，6498 行；Controller 23 个，Entity 33 个，Mapper 33 个 |
+| 前端 | Vue 文件 29 个，8045 行；路由 20 条（含 GRE / TOEFL / 真题套题三套体系） |
+| 接口 | `@GetMapping/@PostMapping/...` 共 58 个 |
+| 数据库 | 32 张表，分 tpo_* / full_* / gre_* / user_* 四组 |
+| GRE 题库 | `gre_question` 56 题、`gre_section` 15 个练习单元、`gre_suite` 7 套、`gre_suite_question` 179 条 |
+| TPO 题库 | `tpo_section` 13 篇、`tpo_question` 49 题、听力音频按 TPO 分目录 |
+| 真题套题 | `full_question` 41 题、`full_section` 12 篇、`full_suite` 3 套 |
+
+---
+
+## 二、功能地图
+
+| 模块 | 路由 | 页面 | 后端接口组 | 数据表 |
+|---|---|---|---|---|
+| 登录 / 用户 | `/login`、`/user` | `Login.vue`、`UserList.vue` | `/api/user/*` | `user` |
+| 托福主页（四板块） | `/tpo` | `TpoList.vue` | `/api/tpo`、`/api/gre/*` 统计 | — |
+| 板块内页（篇章/单元列表） | `/tpo/module/:type` | `TpoModuleList.vue` | `/api/section/list`、`/api/question/*` | `tpo_section`、`tpo_question` |
+| 阅读 / 听力 / 口语 / 写作 | `/tpo/reading/:id` 等 4 条 | `ReadingExam.vue`、`ListeningExam.vue`、`SpeakingExam.vue`、`WritingExam.vue` | `/api/section`、`/api/question/list`、`/api/answer/*` | `tpo_*`、`tpo_answer` |
+| 真题套题（独立数据） | `/full`、`/full/exam`、`/full/result` | `FullList.vue`、`FullExam.vue`、`FullResult.vue` | `/api/fullSuite/*`、`/api/fullExam/*` | `full_suite`、`full_section`、`full_question`、`full_exam_*` |
+| GRE 入口 | `/gre`、`/gre/suite` | `GreHome.vue`、`GreSuiteHome.vue` | `/api/gre/practice/catalog`、`/api/greSuite/list` | `gre_section`、`gre_suite` |
+| GRE 分块练习 | `/gre/practice/:sectionId` | `GrePractice.vue` | `/api/gre/practice/section/{id}`、`/api/gre/practice/answer` | `gre_section`、`gre_question`、`gre_answer` |
+| GRE 套题模考 | `/gre/exam`、`/gre/result` | `GreExam.vue`、`GreResult.vue` | `/api/greSuite/{id}`、`/api/greExam/submit` | `gre_suite_*`、`gre_exam_*` |
+| 错题本 | `/wrongbook`、`/gre/wrong` | `WrongBook.vue`、`GreWrong.vue` | `/api/wrong/*`、`/api/greWrong/*` | `tpo_wrong`、`gre_wrong` |
+
+---
+
+## 三、技术栈
+
+| 层 | 选型 | 在项目里的实际用法 |
+|---|---|---|
+| 前端框架 | Vue 3（`<script setup>`） | 全部页面用组合式 API，`ref/reactive/computed/watch` 管理状态 |
+| 前端路由 | Vue Router 4（`createWebHistory`） | 20 条路由，`meta.requireAuth` + 全局 `beforeEach` 守卫判 token |
+| UI 组件 | Element Plus | `ElMessage/ElMessageBox` 提示、`el-radio-group/el-collapse/el-progress/el-input` 组件 |
+| 状态 | Pinia（已接入） | 依赖存在，主要状态仍走组件内 `ref` + `localStorage` 草稿 |
+| HTTP | Axios 二次封装 | 请求拦截器注入 `Authorization: Bearer`，响应拦截器统一错误与 401 跳登录，超时放宽到 20s |
+| 构建 | Vite 4 | `npm run build`，路由级 `import()` 懒加载，产物按页面拆 chunk |
+| 后端 | Spring Boot 2.7（Java 11） | 三层结构 + 拦截器，无 Spring Security，自实现 JWT 鉴权 |
+| ORM | MyBatis-Plus 3.5 | `BaseMapper` + `LambdaQueryWrapper`，驼峰自动映射，SQL 控制台打印 |
+| 鉴权 | jjwt 0.11.5 | HMAC-SHA256 签名，`subject` 存用户名，2 小时过期 |
+| 数据库 | MySQL 8（`toefl_db`） | 32 张表，仅 2 处物理外键（`tpo`→`tpo_section`→`tpo_question`），其余为逻辑外键，utf8mb4 |
+| 工具链 | Python 导入脚本 | `tools/tpo-import`、`tools/gre-import` 做题库导入与幂等校验 |
+
+---
+
+## 四、后端知识点（逐条对应代码）
+
+### 1. 分层架构与 DTO/VO 约定
+- Controller 只做参数接收、调用 Service/Mapper、包装 `Result<T>`；业务判定集中在 Service（如 `AiScoringService`、`GreAwaScoringService`、`SuiteGeneratorController` 的组卷事务）。
+- `dto/`（`AnswerSubmitDTO`、`ExamSubmitDTO`、`LoginDTO`…）承接前端入参，`entity/` 对应表结构，返回统一用 `LinkedHashMap` 或 VO，避免把带答案的实体直接吐给前端。
+- **可讲的点**：为什么提交接口用 DTO 而不是直接绑 Entity —— 防止前端传 `isCorrect`、`score` 之类字段越权改分。
+
+### 2. JWT 认证链路（不依赖 Spring Security）
+- `JwtUtil`：`Keys.hmacShaKeyFor(secret.getBytes())` 生成密钥 → `Jwts.builder().setSubject(username).setExpiration(...)` → `parserBuilder().setSigningKey(KEY).parseClaimsJws(token)` 校验。
+- `JwtInterceptor implements HandlerInterceptor`：`preHandle` 放行 OPTIONS；取 `Authorization`，必须 `Bearer ` 前缀；解析成功把用户名塞进 `request.setAttribute("loginUser", username)`，失败直接 `401` + JSON。
+- `WebConfig.addInterceptors`：拦截 `/api/**`，再 `excludePathPatterns` 放行登录注册、只读题库、作答、错题、模考、GRE 全部接口。
+- `AuthHelper`：从 token / request 里兜底解析 `userId`，避免前端传 userId 被伪造。
+- **可讲的点**：拦截器 vs Filter 的区别（拦截器在 DispatcherServlet 之后、能拿到 HandlerMethod）；为什么白名单要列出来而不是全站放开；token 里只放 username 不放密码/角色。
+
+### 3. MyBatis-Plus 使用
+- 每个表一个 `XxxMapper extends BaseMapper<Xxx>`，无需写 XML 即可 CRUD；复杂查询用 `LambdaQueryWrapper`（如按 `sectionId` 查题、`orderByAsc(sortIndex)`）。
+- `application.yml` 里 `map-underscore-to-camel-case: true` 把 `limit_second` 自动映射到 `limitSecond`；`log-impl: StdOutImpl` 打印 SQL 方便排查。
+- **可讲的点**：逻辑删除、乐观锁、分页插件都可用但本项目未启用（数据量小，直接查）；`LambdaQueryWrapper` 比字符串列名安全，改字段名编译期就报错。
+
+### 4. 统一响应与异常
+- `Result<T>`（`util/Result.java` 与 `vo/Result.java`）统一 `{code, msg, data}`；前端 axios 响应拦截器直接 `return res.data`，页面只判 `res.code === 200`。
+- 拦截器里手写 JSON 返回 401，避免抛异常后被 Spring 默认错误页接管。
+
+### 5. 跨域与静态资源
+- `addCorsMappings`：`allowedOrigins("*")`、常用方法、`maxAge(3600)`；拦截器额外放行 OPTIONS 预检。
+- `addResourceHandlers`：把 `upload/audio/` 绝对路径映射成 `/upload/audio/**`，否则前端播放口语录音 404（IDE 运行与打包运行工作目录不同，所以用 `new File(...).getAbsolutePath()`）。
+- 文件上传：`spring.servlet.multipart` 单文件 50MB、总请求 100MB；`FileController.uploadAudio` 接 `MultipartFile`。
+
+### 6. 事务与随机组卷
+- `SuiteGeneratorController.generate` 加 `@Transactional(rollbackFor = Exception.class)`：一次生成会插 1 条套题 + N 条 section + M 条 question，任何一步失败整体回滚，不留半套题。
+- 抽题逻辑：先过滤"有题目的篇章"（`count(question) > 0`），再 `Collections.shuffle(candidates, new Random())` 打乱取前 N，所以每次点生成都是新组合。
+- 复制而非引用：抽中的篇章连同正文、音频、题目、选项、答案、解析整篇写进 `full_*`，套题与 `tpo_*` 解耦，改题库不影响已生成的卷。
+- 题量不足时返回 `shortage` 说明缺几篇，而不是静默生成空卷。
+
+### 7. 计分算法（三套口径，互不复用）
+- `ToeflScoreUtil`：原始分 → 0–30 分段映射（阅读 13 题→26、14 题→30；听力按区间 3/6/9/…）。
+- `FullScoreUtil`（新托福 2026 版）：正确率 → 1–6 分档（0.5 步进，95% 以上 6.0，逐档 10% 递减）；总分 = 四项平均；同时算 `legacy = band/6*120` 兼容旧页面；`cefr()` 映射 C1/C2 展示标签。
+- `GreScoreUtil`：正确率 → 130–170 线性映射（1 分档），总分 = V + Q（260–340）；AWA 0–6 按 0.5 量化，`awaComment` 给 6/5/4/3/2/1 档描述。
+- **可讲的点**：官方 GRE 分不是线性映射（有题目难度加权），这里明确标注"教学近似，不能当官方预测分"——面试里承认口径局限比硬吹专业更可信。
+
+### 8. 口语 / 写作"AI 评分"（本地 rubric 引擎）
+- `AiScoringService`（托福）：四维度——内容覆盖（目标词数 150–225 等按题型）、结构组织（连接词密度、段落数）、语言质量（TTR 词汇多样性、平均句长、超长句占比）、口语流畅度/写作句法；各维度累加后从 1 分起算，量化到 0.5 档，输出 `band + dimensions + strengths + improvements`。
+- `GreAwaScoringService`（GRE）：基础分 0.5 + 立场论证 1.5 + 例证具体性 1.5 + 结构组织 1.5 + 语言控制 1.0 = 6.0；Issue 与 Argument 用不同信号词表（Argument 看 `assume/alternative/evidence/bias`，Issue 看 `because/although/for example`）。
+- 设计成"只换实现不换契约"：将来接大模型 API，只改 `scoreWriting/scoreSpeaking` 内部，入参出参不变，前端三个页面零改动。
+- **可讲的点**：为什么不用大模型——离线可跑、零成本、结果稳定可复现；规则引擎的短板是"看不出论证是否真的成立"，只能估结构。
+
+### 9. 计时口径（GRE 对齐真实考试）
+- `gre_section.limit_second` / `gre_suite_section.limit_second` 由 SQL 统一重算：verbal 90 秒/题、quant 105 秒/题、writing 每篇 1800 秒且封顶 3600，下限 300 秒。
+- 前端进入页面即 `setInterval` 倒计时，不提供开始/暂停；归零锁卷（分块练习）或锁模块后自动跳下一部分、最后一部分到点自动交卷（套题）。`costSeconds` 随提交上报。
+
+---
+
+## 五、前端知识点
+
+### 1. Vue 3 组合式 API
+- 页面统一 `<script setup>`；`ref` 存标量，`reactive` 存答案字典（`answers`、`results`、`submitting`）；`computed` 派生统计（已答数、未答数、段落切分、倒计时文本）。
+- `watch(route, ..., {immediate: true})` 做"进入页面即加载"，并且刻意**不再**额外 `onMounted` 二次请求（避免重复打接口、状态被重置两次）。
+- `onBeforeUnmount` 清 `setInterval`，防止离开页面后定时器空转。
+
+### 2. 路由与权限
+- `createWebHistory` 的 history 模式，需要后端/代理把未匹配路径回落到 `index.html`。
+- `router.beforeEach`：`to.meta.requireAuth && !token → /login`，token 从 `localStorage.userInfo` 里取。
+- 路由级懒加载：`component: () => import('@/views/...')`，Vite 会按页面拆 chunk（构建日志里 `GreExam-*.js`、`ListeningExam-*.js` 就是证据）。
+
+### 3. Axios 封装
+- 请求拦截器：读 `localStorage.userInfo` 拼 `Bearer token`。
+- 响应拦截器：成功直接返回 `res.data`（业务层只判 `code`）；失败统一 `ElMessage.error`，401 清本地登录态并跳 `/login`。
+- `timeout: 20000`：整卷提交要判分 + 批量写库，5 秒必然超时。
+
+### 4. "做题前不泄露答案"的状态机
+- 选项渲染只看本次会话的 `pickedMap`，**不从服务端历史作答回填**——否则一进页面就有选项高亮，等于提示答案。
+- 只有 `resultMap[qid]` 存在（本次会话已提交）才渲染对错样式、正确答案标签、解析面板；换题时 `showAnalysis/showTranslation` 自动关闭。
+- 译文（`content_translation`）与听力原文同样按"本题已提交"才解锁。
+
+### 5. 答案草稿缓存
+- `answers` 用 `watch(..., {deep: true})` 写 `localStorage['greExam:answers:<recordId>']`；刷新/暂存退出后 `restoreCache()` 恢复。
+- 提交成功后 `removeItem`，避免过期草稿污染下一套卷。
+
+### 6. 倒计时实现
+- `limit = section.limitSecond`；`startTimer()` 先清旧 interval 再置剩余值，避免重复计时；每秒 `-1`，归零 `timeUp = true` 并清 interval。
+- `urgent = remaining <= 60` 只改颜色，不改变逻辑；时间到禁用选项/输入框/提交按钮（`disabled` 与函数内 `guard` 双保险）。
+- 套题按模块独立倒计时：`moduleLimit = Σ section.limitSecond`，切模块不重置。
+
+### 7. 样式与布局
+- 全局 CSS 变量（`--brand-700`、`--ink-500`、`--surface-2`）统一色板；页面 `scoped` 样式避免互相污染。
+- 双栏 `grid-template-columns: 1fr 1fr`，`@media (max-width: 1100px)` 降为单栏。
+- `.q-title { white-space: pre-line }` 保留题干里的换行（Quantity A / Quantity B 这类结构题必需）。
+
+### 8. 口语录音（浏览器能力）
+- `navigator.mediaDevices.getUserMedia({ audio: true })` 取流 → `new MediaRecorder(stream)` → `ondataavailable` 收 `Blob` → `URL.createObjectURL` 预览 → `multipart/form-data` 上传 `/api/file/uploadAudio`，后端存 `upload/audio/` 并映射成可播放 URL。
+
+---
+
+## 六、数据库设计
+
+### 表分组（32 张）
+| 分组 | 表 | 说明 |
+|---|---|---|
+| 用户与通用 | `user`、`user_answer`、`user_record`、`user_essay`、`user_wrong`、`wrong_question` | 登录、历史作答、练习记录、作文、旧错题 |
+| TOEFL 单模块 | `tpo`、`tpo_section`、`tpo_question`、`tpo_answer`、`tpo_wrong`、`tpo_wrong_question` | 篇章（含 `audio_url`、`content_translation`）、题目、作答、错题 |
+| TOEFL 旧套题 | `suite_section`、`tpo_suite`、`tpo_suite_section`、`tpo_exam_record`、`tpo_exam_answer` | 已下线路由，表和页面文件保留 |
+| 真题套题 | `full_suite`、`full_section`、`full_question`、`full_exam_record`、`full_exam_answer` | 与 tpo_* 解耦，支持随机组卷 |
+| GRE 分块练习 | `gre_section`、`gre_question`、`gre_answer`、`gre_wrong` | 15 单元 / 56 题，独立错题表 |
+| GRE 套题 | `gre_suite`、`gre_suite_section`、`gre_suite_question`、`gre_exam_record`、`gre_exam_answer` | 7 套 / 179 条题目映射 |
+
+### 设计要点
+- **三套数据物理隔离**：`tpo_*`（托福单模块）、`full_*`（托福真题套题）、`gre_*`（GRE）互不调用，页面与接口各自独立，避免题型/计时/计分口径互相污染。
+- **物理外键只有 2 个**：`tpo_section.tpo_id → tpo`、`tpo_question.section_id → tpo_section`（已用 `information_schema.key_column_usage` 核实）；其余关联（`suite_id`、`section_id`、`question_id`、`user_id`）全部是应用层逻辑外键，好处是删改题库不会被级联删除，代价是一致性要靠代码保证。
+- **关键字段**：`limit_second`（限时）、`sort_index`（题序，结果页顺序依赖它）、`task_type`（`text_completion/sentence_equivalence/reading/quant_compare/quant_problem/awa_issue/awa_argument`）、`answer` + `analysis`（答案与中英解析）、`score_standard` + 范文（写作题）。
+- **答案不下发**：`/api/gre/practice/section/{id}` 与 `/api/greSuite/{id}` 返回的题目**不含** `answer/analysis`，判分只发生在提交后。
+
+---
+
+## 七、关键链路（时序）
+
+1. **登录**：`POST /api/user/login` → 校验 → `JwtUtil.generateToken(username)` → 前端存 `localStorage.userInfo` → 之后每个请求带 `Bearer`。
+2. **分块练习**：进入 `/gre/practice/:id` → `GET /api/gre/practice/section/{id}`（题目脱敏，带 `limitSecond`）→ 自动起倒计时 → 选答案 → `POST /api/gre/practice/answer` → 后端比对 `answer` 返回 `correct/correctAnswer/analysis`（写作走 `GreAwaScoringService` 返回 `awaScore/feedback/sampleAnswer`）→ 前端锁定并展示。
+3. **套题模考**：`POST /api/greExam/start` 建 `gre_exam_record` → `GET /api/greSuite/{id}` 拿整卷 → 答案写 `localStorage` 草稿 → 计满/手动点提交 → `POST /api/greExam/submit`（`recordId + costSeconds + answers[]`）→ 后端批改 + `GreScoreUtil` 算 V/Q/AWA → 写 `gre_exam_answer` → 跳 `/gre/result`。
+4. **一键组卷**：`POST /api/greSuite/generate`（`writing/verbal/quant` 各抽几篇）→ 事务内复制题目 → 新套题立刻出现在 `/gre/suite` 目录（默认标题 `GRE 随机套题 · MM-dd HH:mm`，建议生成后改名）。
+5. **错题本**：做题页 `加入错题本` → `POST /api/wrong/add` 或 `/api/greWrong/master`；列表页按科目/掌握状态筛选，支持删除与清空。
+
+---
+
+## 八、可直接用的简历描述（按项目写）
+
+> **TOEFL / GRE 双考试刷题平台**（Java 11 · Spring Boot 2.7 · MyBatis-Plus · MySQL 8 · Vue 3 · Element Plus · Vite）
+> - 独立设计并实现托福、真题套题、GRE 三套隔离数据模型（32 张表），避免不同考试的题型、计时与计分口径互相污染；
+> - 基于 jjwt + HandlerInterceptor 自实现无状态鉴权，白名单式放行只读题库接口，用户身份由后端从 token 解析，杜绝前端伪造 userId；
+> - 实现随机一键组卷：过滤空篇章 → shuffle 抽样 → 事务内复制整篇题目/解析/音频到独立套题表，题库改动不影响已生成试卷；
+> - 设计"提交前不泄露答案"的前端状态机：选项仅回显本次会话点击，正确答案/解析/译文只在提交后渲染，并支持答案草稿本地缓存与断点续做；
+> - 按题型编写计分映射（新托福 1–6 分档 / GRE 130–170 量表 / AWA 0–6），并用本地 rubric 引擎实现口语与写作的多维度评分与改进建议，接口契约预留大模型替换位；
+> - 计时与真实考试对齐：进入页面自动倒计时、不支持暂停，按每题秒数 × 题量折算 section 时限，超时锁卷并自动交卷。
+
+---
+
+## 九、面试可能追问 & 现成答案
+
+1. **JWT 和 Session 的区别？** 无状态、可水平扩展；缺点是撤销困难。本项目 token 只放 username，2 小时过期，撤销靠前端清 localStorage（可改进为 Redis 黑名单）。
+2. **拦截器和 Filter 区别？** Filter 在 Servlet 层、拿不到 HandlerMethod；拦截器在 DispatcherServlet 之后、能拿到 controller 方法，适合做鉴权和日志。
+3. **为什么不用 Spring Security？** 单体量项目、只有一个角色，自实现拦截器成本更低；生产环境要接 RBAC 时再上 Security 或 Shiro。
+4. **GRE 分数为什么不是线性映射？** 真实 GRE 按题目难度加权（section-level adaptive），线性换算只是教学近似，页面上已注明不能当官方预测分。
+5. **随机组卷会不会重复？** 会。当前是"每次随机抽"，没有做历史去重；改进方向是记录已用 section 频次或加权重抽样。
+6. **答案缓存会不会串卷？** key 带 `recordId`，提交后 delete；风险是同一 record 换设备继续做会拿不到草稿（localStorage 不跨端）。
+7. **setInterval 计时准吗？** 浏览器后台标签页会节流（最低 1s 甚至更久），长时间挂机倒计时会偏慢。改进：用 `Date.now()` 差值算剩余，而不是累减。
+8. **多人同时提交会不会重复判分？** 有 `submitting` 前端锁 + 后端按 record 幂等判断（同一 record 已提交应拒绝二次写入），高并发还需唯一索引或分布式锁。
+9. **为什么题目不下发答案？** 前端拿到 `answer` 就等于泄题，所有判分必须在后端完成，前端只负责展示结果。
+10. **数据量大了怎么优化？** 题库按 `section_id`/`suite_id` 加索引、结果页分页、热点题目缓存、组卷改为预生成池。
+
+---
+
+## 十、已知限制（写进文档比藏着好）
+
+| 限制 | 现状 | 方向 |
+|---|---|---|
+| GRE 六选二 / 双空三空多选 | `answer` 单字段整串比对 + 前端单选，暂时做不了多选 | 拆 `answer` 为多值字段 + 前端多选组件 |
+| 口语 AI 分析 | 本地规则引擎评分，未接真正语音识别 | 接 ASR + LLM，契约已预留 |
+| TPO 中文译文覆盖 | 仅部分 section 有 `content_translation`，缺的会提示"本篇暂无中文译文" | 补导入模板 `[TRANSLATION]` 段 |
+| 计时精度 | `setInterval` 累减，后台标签页会被节流 | 改时间戳差值 + `visibilitychange` 校准 |
+| 旧套题代码 | `suite_*`、`tpo_suite*` 表与页面文件保留但已下线路由 | 确认无引用后可归档 |
+
+---
+
+## 十一、关键术语速查
+
+- **TPO**：TOEFL Practice Online，托福官方真题练习集。
+- **新托福 1–6 分档**：2026 版四模块各给 1–6 分（0.5 步进），总分取平均；本项目同时给 0–120 兼容分。
+- **GRE 量表分**：Verbal / Quant 各 130–170，总分 260–340；AWA 0–6，0.5 一档。
+- **AWA Issue / Argument**：Issue 是就一个命题立论；Argument 是批判一段给定论证的推理漏洞。
+- **CEFR**：欧洲语言共同参考框架（A2/B1/B2/C1/C2），只用于页面展示，不参与计算。
+
+---
+
+## 附录 A · 数据模型 ER（按四组数据族拆图）
+
+图中括号内为 `SELECT COUNT(*)` 实测行数（2026-11-15）。
+
+### A1. 托福分块（tpo_*）
+```
+tpo (1)                        tpo_section (13)                  tpo_question (49)
+├ id  [PK]                    ├ id  [PK]                        ├ id  [PK]
+└ tpo_name / year             ├ tpo_id  [FK→tpo]  ★物理外键      ├ section_id [FK→tpo_section] ★物理外键
+                               ├ type（reading/listening/        ├ question_type / type
+                               │      speaking/writing）          ├ question_title
+                               ├ title                           ├ option_a … option_d
+                               ├ audio_url                       ├ answer / analysis
+                               ├ content_text                    ├ prompt / limit_second
+                               └ content_translation（中文译文）   └ score_standard / sample_answer
+        1 ─────────── N ──────────────►        1 ─────────── N ──────────────►
+                                                                    tpo_answer (4)      tpo_wrong (2)
+                                                                    ├ user_id  [逻辑]   ├ user_id  [逻辑]
+                                                                    ├ section_id        ├ section_id
+                                                                    ├ question_id       ├ question_id
+                                                                    ├ user_answer       └ create_time
+                                                                    ├ is_correct
+                                                                    ├ audio_url（口语录音）
+                                                                    └ create_time / update_time
+```
+
+### A2. 真题套题（full_*）
+```
+full_suite (3)                 full_section (12)                 full_question (41)
+├ id  [PK]                    ├ id  [PK]                        ├ id  [PK]
+├ title                       ├ suite_id  [FK→full_suite]        ├ section_id [FK→full_section]
+├ description                 ├ module_type / sort_index        ├ module_type / sort_index
+├ difficulty（随机组合）        ├ title / content_text            ├ question_title
+├ total_minutes（120）         ├ audio_url                       ├ option_a … option_d
+└ create_time                 ├ limit_second / hint             ├ answer / analysis
+                               └ sort_index                      ├ prompt（口语写作素材拼在这里）
+        1 ──────── N ────────►        1 ──────── N ────────►        └ task_type / score_standard / sample_answer
+
+full_exam_record (1)                          full_exam_answer (0)
+├ user_id  [逻辑→user]                       ├ record_id [FK→full_exam_record]
+├ suite_id / suite_title                    ├ question_id / module_type
+├ status / start_time / end_time            ├ user_answer / audio_url
+├ cost_seconds（总用时）                     ├ correct_answer / is_correct
+├ reading_correct / reading_total           ├ band（1–6 分档）
+├ listening_correct / listening_total       ├ ai_feedback（口语/写作四维度反馈）
+├ reading_band / listening_band             └ create_time
+├ speaking_band / writing_band
+└ total_band / legacy_score（0–120 兼容分）
+        1 ────────────────────── N ──────────────────────►
+```
+
+### A3. GRE 分块（gre_section / gre_question / gre_answer / gre_wrong）
+```
+gre_section (15)               gre_question (56)                 gre_answer (7)
+├ id  [PK]                    ├ id  [PK]                        ├ user_id  [逻辑]
+├ module_type（verbal/quant/  ├ section_id  [FK→gre_section]     ├ question_id
+│              writing）      ├ module_type / sort_index         ├ user_answer
+├ sort_index / title          ├ question_title                   ├ is_correct
+├ subtitle / content_text     ├ option_a … option_f（六选二用 6 项）  └ awa_score（写作 0–6）
+├ hint / difficulty           ├ answer / analysis / prompt
+└ limit_second（90 · 105 ·   ├ task_type（tc/se/rc/qc/qp/issue/argument）
+   1800，下限 300）           └ score_standard / sample_answer / difficulty
+                                                                    gre_wrong (0)  独立错题表
+                                                                    ├ user_id  [逻辑]
+                                                                    ├ question_scope（practice/exam）
+                                                                    ├ section_id / module_type / task_type
+                                                                    ├ question_title / option_a … option_f
+                                                                    ├ correct_answer / user_answer
+                                                                    ├ analysis
+                                                                    └ wrong_count / mastered / last_source
+```
+
+### A4. GRE 套题（gre_suite_*）
+```
+gre_suite (7)                  gre_suite_section (55)            gre_suite_question (179)
+├ id  [PK]                    ├ id  [PK]                        ├ id  [PK]
+├ title / description         ├ suite_id  [FK→gre_suite]         ├ section_id [FK→gre_suite_section]
+├ difficulty                  ├ module_type / sort_index        ├ module_type / sort_index
+├ total_minutes               ├ title / content_text            ├ question_title
+├ source（seed/generated）     ├ hint / limit_second             ├ option_a … option_f
+└ create_time                 └ sort_index                      ├ answer / analysis / prompt
+        1 ──────── N ────────►        1 ──────── N ────────►       └ task_type / score_standard / sample_answer
+
+gre_exam_record (0)                           gre_exam_answer (0)
+├ user_id / suite_id / suite_title          ├ record_id [FK→gre_exam_record]
+├ status / start_time / end_time            ├ question_id / module_type
+├ cost_seconds                              ├ user_answer / correct_answer
+├ verbal_correct / verbal_total             ├ is_correct
+├ quant_correct / quant_total               ├ awa_score（写作 0–6）
+├ verbal_scaled / quant_scaled（130–170）    └ ai_feedback + create_time
+└ awa_score / total_score（260–340）
+        1 ────────────────────── N ──────────────────────►
+```
+
+### 关系与约束要点
+- **物理外键只有 2 个**：`tpo_section.tpo_id → tpo`、`tpo_question.section_id → tpo_section`；其余全部为逻辑外键（`suite_id`、`section_id`、`question_id`、`user_id`）。
+- `*_answer / *_wrong / *_exam_record` 通过 `user_id` 逻辑关联 `user`（`user` 只有 `id / username(UNIQUE) / password / create_time`）。
+- 套题子表是**整篇复制**而非引用题库：改 `tpo_section`、`gre_section` 不会破坏已生成的套题；代价是同一道题在套题里存了第二份。
+- `gre_question` 与 `gre_suite_question` 字段几乎相同但不 JOIN，是刻意的隔离设计；`gre_wrong` 也是独立表，不并入托福 `tpo_wrong`。
+- 结果页顺序依赖 `sort_index`，不是 `id` 顺序；所以复制题目时必须原样写入 `sort_index`。

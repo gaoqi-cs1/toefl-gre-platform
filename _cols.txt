@@ -1,0 +1,226 @@
+﻿TABLE_NAME	COLUMN_NAME	COLUMN_TYPE	COLUMN_KEY
+full_exam_answer	id	bigint	PRI
+full_exam_answer	record_id	bigint	MUL
+full_exam_answer	question_id	bigint	
+full_exam_answer	module_type	varchar(20)	
+full_exam_answer	user_answer	longtext	
+full_exam_answer	audio_url	varchar(255)	
+full_exam_answer	correct_answer	varchar(200)	
+full_exam_answer	is_correct	tinyint	
+full_exam_answer	band	decimal(3,1)	
+full_exam_answer	ai_feedback	longtext	
+full_exam_answer	create_time	datetime	
+full_exam_record	id	bigint	PRI
+full_exam_record	user_id	bigint	MUL
+full_exam_record	suite_id	bigint	
+full_exam_record	suite_title	varchar(100)	
+full_exam_record	status	varchar(20)	
+full_exam_record	start_time	datetime	
+full_exam_record	end_time	datetime	
+full_exam_record	cost_seconds	int	
+full_exam_record	reading_correct	int	
+full_exam_record	reading_total	int	
+full_exam_record	listening_correct	int	
+full_exam_record	listening_total	int	
+full_exam_record	reading_band	decimal(3,1)	
+full_exam_record	listening_band	decimal(3,1)	
+full_exam_record	speaking_band	decimal(3,1)	
+full_exam_record	writing_band	decimal(3,1)	
+full_exam_record	total_band	decimal(3,1)	
+full_exam_record	legacy_score	int	
+full_exam_record	create_time	datetime	
+full_question	id	bigint	PRI
+full_question	section_id	bigint	MUL
+full_question	module_type	varchar(20)	
+full_question	sort_index	int	
+full_question	question_title	varchar(2000)	
+full_question	option_a	varchar(1000)	
+full_question	option_b	varchar(1000)	
+full_question	option_c	varchar(1000)	
+full_question	option_d	varchar(1000)	
+full_question	answer	varchar(200)	
+full_question	analysis	text	
+full_question	prompt	longtext	
+full_question	task_type	varchar(40)	
+full_question	limit_second	int	
+full_question	prepare_second	int	
+full_question	score_standard	longtext	
+full_question	sample_answer	longtext	
+full_section	id	bigint	PRI
+full_section	suite_id	bigint	MUL
+full_section	module_type	varchar(20)	
+full_section	sort_index	int	
+full_section	title	varchar(255)	
+full_section	content_text	longtext	
+full_section	audio_url	varchar(500)	
+full_section	limit_second	int	
+full_section	hint	varchar(255)	
+full_suite	id	bigint	PRI
+full_suite	title	varchar(100)	
+full_suite	description	varchar(255)	
+full_suite	difficulty	varchar(20)	
+full_suite	total_minutes	int	
+full_suite	create_time	datetime	
+gre_answer	id	bigint	PRI
+gre_answer	user_id	bigint	MUL
+gre_answer	question_id	bigint	
+gre_answer	user_answer	longtext	
+gre_answer	is_correct	tinyint	
+gre_answer	awa_score	decimal(3,1)	
+gre_answer	create_time	datetime	
+gre_exam_answer	id	bigint	PRI
+gre_exam_answer	record_id	bigint	MUL
+gre_exam_answer	question_id	bigint	
+gre_exam_answer	module_type	varchar(20)	
+gre_exam_answer	user_answer	longtext	
+gre_exam_answer	correct_answer	varchar(200)	
+gre_exam_answer	is_correct	tinyint	
+gre_exam_answer	awa_score	decimal(3,1)	
+gre_exam_answer	ai_feedback	longtext	
+gre_exam_answer	create_time	datetime	
+gre_exam_record	id	bigint	PRI
+gre_exam_record	user_id	bigint	MUL
+gre_exam_record	suite_id	bigint	
+gre_exam_record	suite_title	varchar(100)	
+gre_exam_record	status	varchar(20)	
+gre_exam_record	start_time	datetime	
+gre_exam_record	end_time	datetime	
+gre_exam_record	cost_seconds	int	
+gre_exam_record	verbal_correct	int	
+gre_exam_record	verbal_total	int	
+gre_exam_record	quant_correct	int	
+gre_exam_record	quant_total	int	
+gre_exam_record	verbal_scaled	int	
+gre_exam_record	quant_scaled	int	
+gre_exam_record	awa_score	decimal(3,1)	
+gre_exam_record	total_score	int	
+gre_exam_record	create_time	datetime	
+gre_question	id	bigint	PRI
+gre_question	section_id	bigint	MUL
+gre_question	module_type	varchar(20)	
+gre_question	sort_index	int	
+gre_question	question_title	varchar(2000)	
+gre_question	option_a	varchar(1000)	
+gre_question	option_b	varchar(1000)	
+gre_question	option_c	varchar(1000)	
+gre_question	option_d	varchar(1000)	
+gre_question	option_e	varchar(1000)	
+gre_question	option_f	varchar(1000)	
+gre_question	answer	varchar(200)	
+gre_question	analysis	text	
+gre_question	prompt	longtext	
+gre_question	task_type	varchar(40)	
+gre_question	score_standard	longtext	
+gre_question	sample_answer	longtext	
+gre_question	difficulty	varchar(20)	
+gre_section	id	bigint	PRI
+gre_section	module_type	varchar(20)	MUL
+gre_section	sort_index	int	
+gre_section	title	varchar(200)	
+gre_section	subtitle	varchar(255)	
+gre_section	content_text	longtext	
+gre_section	hint	varchar(255)	
+gre_section	difficulty	varchar(20)	
+gre_section	limit_second	int	
+gre_suite	id	bigint	PRI
+gre_suite	title	varchar(100)	
+gre_suite	description	varchar(255)	
+gre_suite	difficulty	varchar(20)	
+gre_suite	total_minutes	int	
+gre_suite	source	varchar(20)	
+gre_suite	create_time	datetime	
+gre_suite_question	id	bigint	PRI
+gre_suite_question	section_id	bigint	MUL
+gre_suite_question	module_type	varchar(20)	
+gre_suite_question	sort_index	int	
+gre_suite_question	question_title	varchar(2000)	
+gre_suite_question	option_a	varchar(1000)	
+gre_suite_question	option_b	varchar(1000)	
+gre_suite_question	option_c	varchar(1000)	
+gre_suite_question	option_d	varchar(1000)	
+gre_suite_question	option_e	varchar(1000)	
+gre_suite_question	option_f	varchar(1000)	
+gre_suite_question	answer	varchar(200)	
+gre_suite_question	analysis	text	
+gre_suite_question	prompt	longtext	
+gre_suite_question	task_type	varchar(40)	
+gre_suite_question	score_standard	longtext	
+gre_suite_question	sample_answer	longtext	
+gre_suite_question	difficulty	varchar(20)	
+gre_suite_section	id	bigint	PRI
+gre_suite_section	suite_id	bigint	MUL
+gre_suite_section	module_type	varchar(20)	
+gre_suite_section	sort_index	int	
+gre_suite_section	title	varchar(255)	
+gre_suite_section	content_text	longtext	
+gre_suite_section	hint	varchar(255)	
+gre_suite_section	limit_second	int	
+gre_wrong	id	bigint	PRI
+gre_wrong	user_id	bigint	MUL
+gre_wrong	question_id	bigint	
+gre_wrong	question_scope	varchar(20)	
+gre_wrong	section_id	bigint	
+gre_wrong	module_type	varchar(20)	MUL
+gre_wrong	task_type	varchar(40)	
+gre_wrong	question_title	varchar(2000)	
+gre_wrong	option_a	varchar(1000)	
+gre_wrong	option_b	varchar(1000)	
+gre_wrong	option_c	varchar(1000)	
+gre_wrong	option_d	varchar(1000)	
+gre_wrong	option_e	varchar(1000)	
+gre_wrong	option_f	varchar(1000)	
+gre_wrong	correct_answer	varchar(200)	
+gre_wrong	user_answer	varchar(4000)	
+gre_wrong	analysis	text	
+gre_wrong	wrong_count	int	
+gre_wrong	last_source	varchar(20)	
+gre_wrong	mastered	tinyint	
+gre_wrong	create_time	datetime	
+gre_wrong	update_time	datetime	
+tpo_answer	id	bigint	PRI
+tpo_answer	user_id	bigint	MUL
+tpo_answer	question_id	bigint	
+tpo_answer	section_id	bigint	
+tpo_answer	user_answer	text	
+tpo_answer	is_correct	tinyint	
+tpo_answer	create_time	datetime	
+tpo_answer	update_time	datetime	
+tpo_answer	audio_url	varchar(255)	
+tpo_question	id	bigint	PRI
+tpo_question	section_id	bigint	MUL
+tpo_question	question_type	varchar(20)	
+tpo_question	question_title	varchar(2000)	
+tpo_question	option_a	varchar(1000)	
+tpo_question	option_b	varchar(1000)	
+tpo_question	option_c	varchar(1000)	
+tpo_question	option_d	varchar(1000)	
+tpo_question	answer	varchar(50)	
+tpo_question	analysis	text	
+tpo_question	create_time	datetime	
+tpo_question	type	varchar(20)	
+tpo_question	module_type	varchar(20)	
+tpo_question	passage_id	bigint	
+tpo_question	passage_title	varchar(255)	
+tpo_question	passage_content	longtext	
+tpo_question	audio_url	varchar(500)	
+tpo_question	prompt	longtext	
+tpo_question	limit_second	int	
+tpo_question	score_standard	longtext	
+tpo_question	sample_answer	longtext	
+tpo_section	id	bigint	PRI
+tpo_section	tpo_id	bigint	MUL
+tpo_section	type	varchar(20)	
+tpo_section	title	varchar(120)	
+tpo_section	content_text	varchar(4000)	
+tpo_section	content_translation	longtext	
+tpo_section	audio_url	varchar(255)	
+tpo_section	create_time	datetime	
+tpo_wrong	id	bigint	PRI
+tpo_wrong	user_id	bigint	MUL
+tpo_wrong	question_id	bigint	
+tpo_wrong	section_id	bigint	
+tpo_wrong	create_time	datetime	
+user	id	bigint	PRI
+user	username	varchar(50)	UNI
+user	password	varchar(100)	
+user	create_time	datetime	
