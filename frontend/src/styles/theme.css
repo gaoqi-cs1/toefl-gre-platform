@@ -1,0 +1,283 @@
+/* =============================================================
+   全站主题（theme.css）
+   在 main.js 里 import，对所有页面生效：
+   1) 定义颜色 / 圆角 / 阴影变量，统一视觉语言；
+   2) 覆盖 Element Plus 的主色，让按钮、标签、进度条跟着变；
+   3) 提供通用布局类（page / card / section-title / pill 等），
+      新页面直接用，老页面也会因为基础重置与字体变化而更整齐。
+   ============================================================= */
+
+:root {
+  /* 主色：深靛蓝（学术沉稳），辅色：琥珀（强调与进度） */
+  --brand-900: #101a33;
+  --brand-800: #17244a;
+  --brand-700: #1f3162;
+  --brand-600: #2b4a8f;
+  --brand-500: #3a63b8;
+  --brand-100: #e8efff;
+  --brand-50: #f3f7ff;
+
+  --accent-600: #c07a1a;
+  --accent-500: #e0972a;
+  --accent-100: #fdf1dd;
+
+  --success: #1f9d63;
+  --danger: #cf4040;
+  --warning: #d9861f;
+
+  --ink-900: #1c2333;
+  --ink-700: #3d4658;
+  --ink-500: #6b7488;
+  --ink-300: #a7afc0;
+
+  --surface: #ffffff;
+  --surface-2: #f6f8fc;
+  --surface-3: #eef2f9;
+  --line: #dfe5ef;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 26px;
+
+  --shadow-sm: 0 1px 2px rgba(16, 26, 51, 0.06), 0 2px 8px rgba(16, 26, 51, 0.04);
+  --shadow-md: 0 6px 18px rgba(16, 26, 51, 0.08);
+  --shadow-lg: 0 18px 40px rgba(16, 26, 51, 0.12);
+
+  --font-sans: "Inter", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+
+  /* Element Plus 主色联动 */
+  --el-color-primary: #2b4a8f;
+  --el-color-primary-light-3: #4a6cb4;
+  --el-color-primary-light-5: #7c95cd;
+  --el-color-primary-light-7: #b2c2e4;
+  --el-color-primary-light-8: #ccd8ee;
+  --el-color-primary-light-9: #e8efff;
+  --el-color-primary-dark-2: #1f3162;
+  --el-border-radius-base: 10px;
+  --el-font-family: var(--font-sans);
+  --el-text-color-primary: var(--ink-900);
+  --el-text-color-regular: var(--ink-700);
+  --el-border-color: var(--line);
+  --el-border-color-light: var(--line);
+}
+
+* { box-sizing: border-box; }
+
+html, body, #app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--ink-900);
+  background: var(--surface-2);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a { color: var(--brand-600); text-decoration: none; }
+a:hover { color: var(--brand-500); }
+
+/* 统一滚动条，避免老页面出现系统粗滚动条 */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb {
+  background: #cdd5e4;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover { background: #b3bed2; background-clip: content-box; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* ---------------- 通用布局 ---------------- */
+.page {
+  min-height: 100%;
+  padding: 28px 32px 56px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.page-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.page-title {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  color: var(--ink-900);
+  margin: 0;
+}
+
+.page-sub {
+  margin: 8px 0 0;
+  color: var(--ink-500);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.card-pad { padding: 22px 24px; }
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 650;
+  color: var(--ink-900);
+  margin: 0 0 14px;
+}
+
+.section-title::before {
+  content: "";
+  width: 4px;
+  height: 16px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--brand-500), var(--accent-500));
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--brand-50);
+  color: var(--brand-600);
+  border: 1px solid var(--brand-100);
+  white-space: nowrap;
+}
+
+.pill--accent { background: var(--accent-100); color: var(--accent-600); border-color: #f6e0bb; }
+.pill--ok { background: #e7f7ef; color: var(--success); border-color: #c7ecda; }
+.pill--muted { background: var(--surface-3); color: var(--ink-500); border-color: var(--line); }
+
+.band-badge {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  color: var(--brand-700);
+}
+
+/* 空状态 */
+.empty {
+  padding: 60px 0;
+  text-align: center;
+  color: var(--ink-500);
+  font-size: 14px;
+}
+
+/* 细分割线 */
+.hr { height: 1px; background: var(--line); border: 0; margin: 18px 0; }
+
+/* 让 Element Plus 卡片/输入框跟在主题上 */
+.el-card { border-radius: var(--radius-lg) !important; border-color: var(--line) !important; }
+.el-button { font-weight: 600; }
+.el-tag { border-radius: 999px; }
+.el-radio, .el-checkbox { margin-right: 0; }
+
+/* =============================================================
+   全站视觉统一层（追加段）
+   目的：不动任何页面的模板与业务逻辑，只靠这一层把老页面
+   （TPO 列表 / 阅读 / 听力 / 口语 / 写作 / 套题 / 成绩 / 错题本）
+   的观感拉到同一水平：留白、卡片、表格、按钮、焦点态、滚动、过渡。
+   ============================================================= */
+
+/* 页面底色：极淡的双色渐变，避免大面积纯灰显脏 */
+body {
+  background:
+    radial-gradient(1200px 520px at 12% -8%, #eef3ff 0%, rgba(238, 243, 255, 0) 60%),
+    radial-gradient(900px 420px at 96% 2%, #fdf4e6 0%, rgba(253, 244, 230, 0) 55%),
+    var(--surface-2);
+  background-attachment: fixed;
+}
+
+html { scroll-behavior: smooth; }
+
+::selection { background: rgba(58, 99, 184, 0.18); }
+
+/* 页头：标题加一点字重差，副标题限制行宽，右侧动作区不贴边 */
+.page-head { align-items: flex-start; padding-bottom: 4px; }
+.page-title { font-size: 27px; letter-spacing: -0.5px; }
+.page-sub { max-width: 780px; }
+
+/* 卡片：统一圆角、边框与悬停反馈（只对可交互卡片加抬起，避免静态区块乱动） */
+.card { transition: box-shadow 0.18s ease, border-color 0.18s ease, transform 0.18s ease; }
+.card:hover { border-color: #d3dcea; }
+
+/* 表格：表头更清晰、行悬停有反馈、数字等宽 */
+.el-table { border-radius: var(--radius-md); overflow: hidden; }
+.el-table th.el-table__cell {
+  background: var(--surface-3) !important;
+  color: var(--ink-700);
+  font-weight: 650;
+}
+.el-table td.el-table__cell { border-bottom-color: #eef2f8; }
+.el-table .el-table__row:hover > td.el-table__cell { background: #f7faff !important; }
+.el-table .cell { line-height: 1.55; }
+
+/* 表单控件：统一高度与焦点环 */
+.el-input__wrapper,
+.el-textarea__inner,
+.el-select__wrapper {
+  border-radius: var(--radius-md);
+  box-shadow: 0 0 0 1px var(--line) inset;
+  transition: box-shadow 0.16s ease;
+}
+.el-input__wrapper.is-focus,
+.el-textarea__inner:focus,
+.el-select__wrapper.is-focused {
+  box-shadow: 0 0 0 1px var(--brand-500) inset, 0 0 0 3px rgba(58, 99, 184, 0.14);
+}
+
+/* 按钮：统一圆角与按下反馈 */
+.el-button { border-radius: 999px; transition: transform 0.12s ease, box-shadow 0.16s ease; }
+.el-button:not(.is-text):not(.is-link):active { transform: translateY(1px); }
+.el-button--primary:not(.is-text):not(.is-link) { box-shadow: 0 6px 16px rgba(43, 74, 143, 0.22); }
+
+/* 弹窗 / 消息框 / 抽屉圆角 */
+.el-dialog, .el-message-box { border-radius: var(--radius-lg); }
+.el-message { border-radius: 999px; }
+
+/* 状态标签补充（GRE 错题本等处使用） */
+.pill--bad { background: #fdecea; color: #c0392b; border-color: #f6cfc9; }
+.pill--warn { background: var(--accent-100); color: var(--accent-600); border-color: #f6e0bb; }
+
+/* 空状态统一成卡片内居中提示 */
+.empty { font-size: 14px; color: var(--ink-500); }
+
+/* 键盘可达性：所有可点元素有清晰焦点环 */
+:focus-visible {
+  outline: 2px solid rgba(58, 99, 184, 0.55);
+  outline-offset: 2px;
+}
+
+/* 尊重系统"减少动态效果"设置 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
