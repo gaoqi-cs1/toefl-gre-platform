@@ -1,0 +1,64 @@
+<template>
+  <div class="page" style="padding:20px;background:#f7f8fa;min-height:100vh">
+    <div style="max-width:1200px;margin:0 auto;">
+      <div class="page-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <span style="font-size:20px;font-weight:600">📋 整套模考记录</span>
+        <el-button type="primary" plain @click="$router.push('/tpo/suite/list')">返回套题列表</el-button>
+      </div>
+      <el-card shadow="hover">
+        <el-table :data="tableData" border stripe>
+          <el-table-column prop="suiteName" label="套题名称" />
+          <el-table-column label="总分">
+            <template #default="scope">
+              <span style="font-weight:bold;color:#409eff;font-size:16px">{{ scope.row.totalScore ?? '-' }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="分项">
+            <template #default="scope">
+              <span style="font-size:13px;color:#666">R:{{ scope.row.readScore??'-' }} | L:{{ scope.row.listenScore??'-' }} | S:{{ scope.row.speakScore??'-' }} | W:{{ scope.row.writeScore??'-' }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="状态">
+            <template #default="scope">
+              <el-tag :type="scope.row.examStatus === 'doing' ? 'warning' : 'success'">
+                {{ scope.row.examStatus === 'doing' ? '进行中' : '已完成' }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="startTime" label="开始时间" />
+          <el-table-column prop="endTime" label="结束时间" />
+          <el-table-column label="操作">
+            <template #default="scope">
+              <el-button size="small" @click="goFullExam(scope.row)" v-if="scope.row.examStatus === 'doing'">继续整套模考</el-button>
+              <el-button size="small" type="success" @click="viewFullResult(scope.row)" v-else>查看成绩</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-card>
+    </div>
+  </div>
+</template>
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
+import service from '@/utils/request.js'
+const router = useRouter()
+const tableData = ref([])
+
+const loadList = async () => {
+  try {
+    const res = await service.get('/api/fullSuiteExam/recordList')
+    if (res.code === 200) tableData.value = res.data
+  } catch (e) {
+    ElMessage.error('加载整套记录失败')
+  }
+}
+const goFullExam = (row) => {
+  router.push({ path: '/tpo/fullExam', query: { suiteId: row.suiteId, recordId: row.id } })
+}
+const viewFullResult = (row) => {
+  router.push({ path: '/tpo/fullResult', query: { recordId: row.id } })
+}
+onMounted(loadList)
+</script>

@@ -1,0 +1,147 @@
+<template>
+  <div class="page" style="padding:20px;background:#f7f8fa;min-height:100vh">
+    <div class="page-wrap" style="max-width:1200px;margin:0 auto;">
+      <div class="page-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <span style="font-size:20px;font-weight:600">{{suiteInfo.title || '托福整套独立模考'}}</span>
+        <div>
+          <el-button type="primary" @click="submitAllExam">提交整套模考</el-button>
+          <el-button @click="$router.push('/tpo/fullRecord')">整套模考记录</el-button>
+          <el-button @click="$router.push('/tpo/suite/list')">返回套题列表</el-button>
+        </div>
+      </div>
+
+      <el-card shadow="hover">
+        <el-tabs v-model="activeTab">
+          <el-tab-pane label="阅读" name="reading">
+            <div v-for="q in questionMap.reading" :key="q.id" class="q-item">
+              <div class="q-title">{{q.title}}</div>
+              <el-radio-group v-model="localReadMap[q.id]" @change="(val)=>saveReadingAnswer(q.id, val)">
+                <el-radio label="A">A. {{ JSON.parse(q.options).A }}</el-radio>
+                <el-radio label="B">B. {{ JSON.parse(q.options).B }}</el-radio>
+                <el-radio label="C">C. {{ JSON.parse(q.options).C }}</el-radio>
+                <el-radio label="D">D. {{ JSON.parse(q.options).D }}</el-radio>
+              </el-radio-group>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="听力" name="listening">
+            <div v-for="q in questionMap.listening" :key="q.id" class="q-item">
+              <div class="q-title">{{q.title}}</div>
+              <el-radio-group v-model="localListenMap[q.id]" @change="(val)=>saveListeningAnswer(q.id, val)">
+                <el-radio label="A">A. {{ JSON.parse(q.options).A }}</el-radio>
+                <el-radio label="B">B. {{ JSON.parse(q.options).B }}</el-radio>
+                <el-radio label="C">C. {{ JSON.parse(q.options).C }}</el-radio>
+                <el-radio label="D">D. {{ JSON.parse(q.options).D }}</el-radio>
+              </el-radio-group>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="口语" name="speaking">
+            <div v-for="q in questionMap.speaking" :key="q.id" class="q-item">
+              <div class="q-title">{{q.title}}</div>
+              <el-input v-model="localSpeakMap[q.id]" type="textarea" rows="4" @change="(val)=>saveSpeakingAnswer(q.id, val)" placeholder="录入口语作答文本"/>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="写作" name="writing">
+            <div v-for="q in questionMap.writing" :key="q.id" class="q-item">
+              <div class="q-title">{{q.title}}</div>
+              <el-input v-model="localWriteMap[q.id]" type="textarea" rows="8" @change="(val)=>saveWritingAnswer(q.id, val)" placeholder="在这里写作文"/>
+            </div>
+          </el-tab-pane>
+        </el-tabs>
+      </el-card>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import service from '@/utils/request.js'
+
+const route = useRoute()
+const router = useRouter()
+const suiteId = route.query.suiteId
+const recordId = route.query.recordId
+
+const activeTab = ref('reading')
+const suiteInfo = ref({})
+const questionMap = ref({
+  reading: [],
+  listening: [],
+  speaking: [],
+  writing: []
+})
+
+const localReadMap = ref({})
+const localListenMap = ref({})
+const localSpeakMap = ref({})
+const localWriteMap = ref({})
+
+// 整套答案缓存
+const answerData = ref({
+  reading: [],
+  listening: [],
+  speaking: [],
+  writing: []
+})
+
+const saveReadingAnswer = (qId, userAns) => {
+  const item = answerData.value.reading.find(i => i.questionId === qId)
+  if (item) item.userAns = userAns
+  else answerData.value.reading.push({ questionId: qId, userAns })
+}
+const saveListeningAnswer = (qId, userAns) => {
+  const item = answerData.value.listening.find(i => i.questionId === qId)
+  if (item) item.userAns = userAns
+  else answerData.value.listening.push({ questionId: qId, userAns })
+}
+const saveSpeakingAnswer = (qId, content) => {
+  const item = answerData.value.speaking.find(i => i.questionId === qId)
+  if (item) item.content = content
+  else answerData.value.speaking.push({ questionId: qId, content })
+}
+const saveWritingAnswer = (qId, essay) => {
+  const item = answerData.value.writing.find(i => i.questionId === qId)
+  if (item) item.essay = essay
+  else answerData.value.writing.push({ questionId: qId, essay })
+}
+
+// ✅ 整套提交：调用全新独立接口 /api/fullSuiteExam/submit
+const submitAllExam = async () => {
+  await ElMessageBox.confirm('确定提交整套模考？提交后无法修改全部答案！', '提示', { type: 'warning' })
+  try {
+    const res = await service.post('/api/fullSuiteExam/submit', {
+      recordId: recordId,
+      readingAnswerList: answerData.value.reading,
+      listeningAnswerList: answerData.value.listening,
+      speakingAnswerList: answerData.value.speaking,
+      writingAnswerList: answerData.value.writing
+    })
+    if (res.code === 200) {
+      ElMessage.success('整套模考提交成功！')
+      router.push({ path: '/tpo/fullResult', query: { recordId } })
+    }
+  } catch (err) {
+    ElMessage.error('提交失败：' + (err?.response?.data?.msg || '网络异常'))
+  }
+}
+
+// 加载整套题目（独立接口，不走单科加载）
+const loadAllQuestions = async () => {
+  try {
+    const res = await service.get('/api/fullSuiteExam/loadQuestions', { params: { suiteId } })
+    if (res.code === 200) {
+      questionMap.value = res.data
+    }
+  } catch (e) {
+    ElMessage.error('加载整套题目失败')
+  }
+}
+onMounted(() => {
+  loadAllQuestions()
+})
+</script>
+<style scoped>
+.q-item { margin:16px 0; padding:12px;border:1px solid #eee;border-radius:8px; }
+.q-title { font-weight:500;margin-bottom:8px; }
+</style>
